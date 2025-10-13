@@ -396,3 +396,26 @@ function resizePrintifyIframe() {
 window.addEventListener('load', resizePrintifyIframe);
 window.addEventListener('resize', resizePrintifyIframe);
 window.addEventListener('orientationchange', () => setTimeout(resizePrintifyIframe, 250));
+
+// Accessibility: keep the active nav item as an anchor for semantics but
+// prevent it from navigating while it's the current page. This preserves
+// focusability while ensuring clicking or pressing Enter doesn't reload the page.
+(function disableCurrentPageLinks(){
+  function block(e){
+    // only block anchors that explicitly declare aria-current="page"
+    const el = e.currentTarget;
+    if (el && el.getAttribute && el.getAttribute('aria-current') === 'page') {
+      e.preventDefault();
+      // avoid double-activation for keyboard users
+      e.stopPropagation();
+    }
+  }
+
+  document.querySelectorAll('.button-container a[aria-current="page"]').forEach(a => {
+    a.addEventListener('click', block);
+    a.addEventListener('keydown', (e) => {
+      // Block Enter/Space activating the link
+      if (e.key === 'Enter' || e.key === ' ') block(e);
+    });
+  });
+})();
