@@ -269,8 +269,9 @@ body {
   }
   .frosted-btn {
     font-size: 0.85rem;
-    padding: 6px 12px;
-    border-radius: 24px;
+    padding: 8px 14px;
+    /* rectangular look on mobile: small corner radius instead of pill */
+    border-radius: 6px;
   }
 }
 
