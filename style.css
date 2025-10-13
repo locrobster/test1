@@ -109,11 +109,30 @@ body {
 .banner + .button-container,
 .banner ~ .button-container,
 .banner .button-container {
-  /* pull the button bar upward so it overlaps the banner bottom */
-  margin-top: -40px; /* default overlap */
   margin-bottom: 28px; /* keep breathing room below */
-  position: relative; /* keep it in the flow but above siblings */
   z-index: 2000; /* ensure it's above the banner graphics */
+}
+
+/* If the button container is placed inside the banner, absolutely anchor it
+   to the banner bottom for pixel-perfect overlap. */
+.banner .button-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -36px;
+  margin: 0;
+  z-index: 3000;
+}
+
+/* If the button container is a sibling after the banner, use a relative
+   width shift so it visually stretches to the banner edges */
+.banner + .button-container,
+.banner ~ .button-container {
+  position: relative;
+  left: calc(-1 * var(--page-side-space));
+  width: calc(100% + (var(--page-side-space) * 2));
+  margin-top: -36px;
+  margin-bottom: 28px;
 }
 
 @media (max-width: 900px) {
@@ -126,13 +145,20 @@ body {
 }
 
 @media (max-width: 480px) {
-  .banner + .button-container {
+  /* Mobile: make the bar full-bleed and remove rounded corners */
+  .banner + .button-container,
+  .banner ~ .button-container,
+  .banner .button-container {
+    left: calc(-1 * env(safe-area-inset-left, 0px));
+    right: calc(-1 * env(safe-area-inset-right, 0px));
+    transform: none;
+    position: relative;
+    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
     margin-top: -22px;
     margin-bottom: 14px;
     padding: 8px 12px;
     gap: 8px;
-    border-radius: 28px;
-    max-width: calc(100% - (var(--page-side-space) * 2));
+    border-radius: 0;
   }
 }
 
