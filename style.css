@@ -1047,6 +1047,8 @@ body.show-guides .index-featured-gallery::after {
 
 /* Desktop tweaks: ensure columns don't grow too large on very wide screens */
 @media (min-width: 1400px) {
+  /* On very wide screens, give gallery columns a sensible min width so
+     thumbnails don't grow excessively large. */
   .index-featured-gallery > .gallery-grid-full {
     grid-template-columns: repeat(3, minmax(180px, 1fr));
   }
