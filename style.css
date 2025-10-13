@@ -103,6 +103,39 @@ body {
 }
 .button-container::-webkit-scrollbar { display: none; }
 
+/* Anchor the button bar so it visually sits at the bottom edge of the banner.
+   Support three DOM cases: directly after the banner, a later sibling, or placed
+   inside the banner itself. */
+.banner + .button-container,
+.banner ~ .button-container,
+.banner .button-container {
+  /* pull the button bar upward so it overlaps the banner bottom */
+  margin-top: -40px; /* default overlap */
+  margin-bottom: 28px; /* keep breathing room below */
+  position: relative; /* keep it in the flow but above siblings */
+  z-index: 2000; /* ensure it's above the banner graphics */
+}
+
+@media (max-width: 900px) {
+  .banner + .button-container {
+    margin-top: -30px;
+    margin-bottom: 18px;
+    padding: 12px 18px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner + .button-container {
+    margin-top: -22px;
+    margin-bottom: 14px;
+    padding: 8px 12px;
+    gap: 8px;
+    border-radius: 28px;
+    max-width: calc(100% - (var(--page-side-space) * 2));
+  }
+}
+
 .frosted-btn {
   flex-shrink: 0;
   font-size: 1.1rem;
