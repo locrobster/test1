@@ -209,6 +209,24 @@ body {
     gap: 8px;
     border-radius: 0;
   }
+
+  /* Ensure the button container stretches edge-to-edge on every page
+     (not only when it's a sibling/child of .banner). This overrides the
+     desktop centering rules (fit-content / max-width) at small sizes. */
+  .button-container {
+    position: relative;
+    left: calc(-1 * env(safe-area-inset-left, 0px));
+    right: calc(-1 * env(safe-area-inset-right, 0px));
+    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+    max-width: none;
+    margin: 0;
+    padding: 8px 0;
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+    border-radius: 0;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.45), 0 0 18px rgba(180,160,255,0.18);
+    overflow-x: auto;
+  }
 }
 
 .frosted-btn {
