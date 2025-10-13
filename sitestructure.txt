@@ -3,7 +3,7 @@
 ├── index.html               # main landing page (Robbie & Parker sets)
 ├── gallery.html             # dedicated gallery for all art
 ├── shop.html
-├── about.html
+<!-- about.html removed -->
 ├── contact.html
 │
 ├── style.css
