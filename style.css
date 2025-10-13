@@ -479,14 +479,17 @@ body {
 
 /* Ensure equal padding to container edges on smaller screens */
 @media (max-width: 700px) {
+  /* Keep merch layout as: top (landscape) spanning both columns, bottom two portraits side-by-side */
   .merch-featured {
-    grid-template-columns: 1fr;
-  }
-  .merch-featured .thumb.bottom {
-    aspect-ratio: auto;     /* stack vertically on small screens */
+    grid-template-columns: 1fr 1fr; /* two equal columns even on mobile */
+    gap: 10px;
   }
   .merch-featured .thumb.top {
-    aspect-ratio: 4 / 3;    /* make top less wide on narrow screens for better balance */
+    grid-column: 1 / -1; /* span both columns */
+    aspect-ratio: 16 / 9; /* maintain landscape feel on small screens */
+  }
+  .merch-featured .thumb.bottom {
+    aspect-ratio: 3 / 4;  /* portrait thumbnails side-by-side */
   }
 }
 
