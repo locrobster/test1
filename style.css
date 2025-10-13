@@ -540,18 +540,15 @@ body {
 
 .glass-frame iframe {
   width: 100%;
-  height: 900px; /* default tall frame so Printify loads fully */
+  min-height: 480px; /* let JS set the exact height */
   border: none;
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.35);
   margin-top: 6px;
 }
 
-@media (max-width: 900px) {
-  .glass-frame iframe { height: 760px; }
-}
 @media (max-width: 480px) {
-  .glass-frame iframe { height: 640px; border-radius: 8px; }
+  .glass-frame iframe { border-radius: 8px; }
 }
 
 /* When used specifically as a page-level wrapper for a full grid, don't make the

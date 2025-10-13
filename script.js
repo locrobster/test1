@@ -368,3 +368,31 @@ document.addEventListener("DOMContentLoaded", () => {
     thumbDiv.addEventListener("click", () => openLightbox([fullPath]));
   });
 });
+
+// ---------------------------
+// Auto-resize Printify iframe (shop page)
+// ---------------------------
+function resizePrintifyIframe() {
+  const iframe = document.getElementById('printify-shop');
+  if (!iframe) return;
+
+  // Calculate available height: viewport minus banner height minus button-container height minus some padding
+  const vh = window.innerHeight;
+  const banner = document.querySelector('.banner');
+  const buttons = document.querySelector('.button-container');
+  const footer = document.querySelector('.footer');
+
+  const bannerH = banner ? banner.getBoundingClientRect().height : 0;
+  const buttonsH = buttons ? buttons.getBoundingClientRect().height : 0;
+  const footerH = footer ? footer.getBoundingClientRect().height : 0;
+
+  // Reserve 20px extra spacing
+  const reserved = bannerH + buttonsH + 20;
+
+  const newHeight = Math.max(480, vh - reserved - 40); // ensure minimum
+  iframe.style.height = newHeight + 'px';
+}
+
+window.addEventListener('load', resizePrintifyIframe);
+window.addEventListener('resize', resizePrintifyIframe);
+window.addEventListener('orientationchange', () => setTimeout(resizePrintifyIframe, 250));
