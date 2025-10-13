@@ -246,32 +246,68 @@ const galleryContainer = document.querySelector(".gallery-grid-full");
 if (galleryContainer) {
   const folder = "art";
   const maxImages = 50; // supports up to 50 artworks
-
   function loadArtGallery() {
-    for (let i = 1; i <= maxImages; i++) {
+    const checks = [];
+
+    function appendThumb(i) {
       const thumbPath = `images/thumbnails/${folder}/${folder}${i}.jpg`;
       const fullPath = `images/fullsize/${folder}/${folder}${i}.jpg`;
+      const thumbDiv = document.createElement("div");
+      thumbDiv.classList.add("thumb");
 
-      fetch(thumbPath, { method: "HEAD" })
+      const img = document.createElement("img");
+      img.src = thumbPath;
+      img.alt = `${folder} ${i}`;
+
+      thumbDiv.appendChild(img);
+      galleryContainer.appendChild(thumbDiv);
+      thumbDiv.addEventListener("click", () => openLightbox([fullPath]));
+    }
+
+    // Build an array of HEAD requests (one per possible image)
+    for (let i = 1; i <= maxImages; i++) {
+      const thumbPath = `images/thumbnails/${folder}/${folder}${i}.jpg`;
+      const p = fetch(thumbPath, { method: "HEAD" })
         .then(res => {
           if (res.ok) {
-            // Create frosted thumbnail wrapper
-            const thumbDiv = document.createElement("div");
-            thumbDiv.classList.add("thumb");
-
-            const img = document.createElement("img");
-            img.src = thumbPath;
-            img.alt = `${folder} ${i}`;
-
-            thumbDiv.appendChild(img);
-            galleryContainer.appendChild(thumbDiv);
-
-            // Clicking opens full-size image in lightbox
-            thumbDiv.addEventListener("click", () => openLightbox([fullPath]));
+            appendThumb(i);
+            return true;
           }
+          return false;
         })
-        .catch(() => {});
+        .catch(() => false);
+      checks.push(p);
     }
+
+    // After all checks complete, ensure we have an even number of thumbs
+    Promise.all(checks).then(results => {
+      const foundCount = results.filter(Boolean).length;
+      if (foundCount % 2 === 1) {
+        // Append a "Coming Soon" placeholder as the last square so rows are even.
+        const placeholder = document.createElement('div');
+        placeholder.className = 'thumb coming-soon';
+        placeholder.setAttribute('title', 'Coming Soon');
+
+        // Use an inline SVG data-uri so no extra asset is required
+        const svg = encodeURIComponent(`
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'>
+            <rect width='100%' height='100%' fill='#efeef8' />
+            <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Inter, Arial, sans-serif' font-size='28' fill='#4b1f9e'>Coming Soon</text>
+          </svg>
+        `);
+        const dataUri = `data:image/svg+xml;charset=UTF-8,${svg}`;
+
+        const img = document.createElement('img');
+        img.src = dataUri;
+        img.alt = 'Coming Soon';
+        img.style.objectFit = 'cover';
+
+        placeholder.appendChild(img);
+        // Make it non-clickable (no lightbox)
+        placeholder.classList.add('no-lightbox');
+        galleryContainer.appendChild(placeholder);
+      }
+    });
   }
 
   window.addEventListener("DOMContentLoaded", loadArtGallery);

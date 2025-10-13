@@ -55,6 +55,9 @@
     <div class="copyright">© 2025 LocRobster Studios. All Rights Reserved.</div>
   </footer>
 
+  <!-- Dev: persistent visual-guide toggle (static) -->
+  <button id="toggleGuides" class="dev-toggle" aria-pressed="false" title="Toggle visual guides">Guides</button>
+
   <script src="script.js"></script>
   <script>lucide.createIcons();</script>
 
@@ -71,26 +74,29 @@
       });
     })();
   </script>
+  <!-- Dev: persistent visual-guide toggle (moved inside the document so browsers render it) -->
+  <!-- The button + script are intentionally placed before the closing </body> so all browsers, including Safari on iOS, will show the toggle. -->
+  <script>
+    (function(){
+      var control = document.getElementById('toggleGuides');
+      if (!control) return;
+      function updateState() {
+        const enabled = document.body.classList.contains('show-guides');
+        control.setAttribute('aria-pressed', String(enabled));
+        control.textContent = enabled ? 'Guides: ON' : 'Guides';
+        control.classList.toggle('active', enabled);
+      }
+      control.addEventListener('click', () => {
+        document.body.classList.toggle('show-guides');
+        updateState();
+      });
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateState);
+      } else {
+        updateState();
+      }
+    })();
+  </script>
+
 </body>
 </html>
-
-<!-- Dev: persistent visual-guide toggle -->
-<button id="toggleGuides" class="dev-toggle" aria-pressed="false" title="Toggle visual guides">Guides</button>
-<script>
-  // Persistent dev toggle for the visual guides (same helper as index)
-  (function(){
-    const btn = document.getElementById('toggleGuides');
-    if (!btn) return;
-    function updateState() {
-      const enabled = document.body.classList.contains('show-guides');
-      btn.setAttribute('aria-pressed', String(enabled));
-      btn.textContent = enabled ? 'Guides: ON' : 'Guides';
-      btn.classList.toggle('active', enabled);
-    }
-    btn.addEventListener('click', () => {
-      document.body.classList.toggle('show-guides');
-      updateState();
-    });
-    document.addEventListener('DOMContentLoaded', updateState);
-  })();
-</script>
