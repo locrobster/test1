@@ -525,6 +525,35 @@ body {
   margin-right: var(--page-side-space);
 }
 
+/* Shop: center content and make embedded shop iframe fully visible */
+.glass-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+}
+
+.glass-frame { max-width: calc(100% - (var(--page-side-space) * 2)); margin-left: var(--page-side-space); margin-right: var(--page-side-space); }
+
+.glass-frame .info-text { max-width: 900px; margin: 0 auto 18px; }
+
+.glass-frame iframe {
+  width: 100%;
+  height: 900px; /* default tall frame so Printify loads fully */
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  margin-top: 6px;
+}
+
+@media (max-width: 900px) {
+  .glass-frame iframe { height: 760px; }
+}
+@media (max-width: 480px) {
+  .glass-frame iframe { height: 640px; border-radius: 8px; }
+}
+
 /* When used specifically as a page-level wrapper for a full grid, don't make the
    outer section a grid itself; let the inner .gallery-grid-full be the grid. */
 .index-featured-gallery.gallery-wrap {
