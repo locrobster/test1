@@ -12,7 +12,7 @@
   <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 </head>
 
-<body class="subpage">
+<body class="subpage show-guides">
   <!-- Banner -->
   <div class="banner cropped">
     <img src="graphics/mainbanner.png" alt="Main Banner">
@@ -73,3 +73,24 @@
   </script>
 </body>
 </html>
+
+<!-- Dev: persistent visual-guide toggle -->
+<button id="toggleGuides" class="dev-toggle" aria-pressed="false" title="Toggle visual guides">Guides</button>
+<script>
+  // Persistent dev toggle for the visual guides (same helper as index)
+  (function(){
+    const btn = document.getElementById('toggleGuides');
+    if (!btn) return;
+    function updateState() {
+      const enabled = document.body.classList.contains('show-guides');
+      btn.setAttribute('aria-pressed', String(enabled));
+      btn.textContent = enabled ? 'Guides: ON' : 'Guides';
+      btn.classList.toggle('active', enabled);
+    }
+    btn.addEventListener('click', () => {
+      document.body.classList.toggle('show-guides');
+      updateState();
+    });
+    document.addEventListener('DOMContentLoaded', updateState);
+  })();
+</script>

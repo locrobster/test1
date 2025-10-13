@@ -485,6 +485,36 @@ body {
   }
 }
 
+/* Mobile fix: enforce equal 2-column grid and full-width cells to prevent uneven spacing */
+@media (max-width: 700px) {
+  /* Make gallery-wrap match the index container sizing/padding so visuals align */
+  .index-featured-gallery.gallery-wrap {
+    display: block;
+    width: calc(100% - (var(--page-side-space) * 2));
+    max-width: calc(1200px - (var(--page-side-space) * 2));
+    margin: 60px var(--page-side-space);
+    padding: calc(var(--gallery-padding) * 1.1);
+    box-sizing: border-box;
+  }
+  .index-featured-gallery.gallery-wrap > .gallery-grid-full {
+    grid-template-columns: repeat(2, 1fr) !important; /* two equal columns */
+    gap: var(--gallery-gap);
+    width: 100%;
+    margin: 0;
+    padding: 0; /* outer container provides padding */
+    align-items: start;
+    justify-items: stretch;
+  }
+  /* ensure each thumbnail fills its grid cell and remains square */
+  .index-featured-gallery.gallery-wrap .thumb {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+  }
+  .index-featured-gallery.gallery-wrap .thumb img { display: block; }
+  .index-featured-gallery.gallery-wrap > .gallery-grid-full > .thumb { padding: 0; }
+}
+
 /* Make featured and merch sections match the About section's inner padding scale */
 .index-featured-gallery,
 .merch-featured {
