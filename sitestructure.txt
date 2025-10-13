@@ -1,0 +1,46 @@
+/ (root of your site)
+│
+├── index.html               # main landing page (Robbie & Parker sets)
+├── gallery.html             # dedicated gallery for all art
+├── shop.html
+├── about.html
+├── contact.html
+│
+├── style.css
+├── script.js
+│
+├── /graphics                # site UI graphics
+│    ├── bannerlogo.png
+│    ├── mainbanner.png
+│    ├── container1bkgnd.png
+│    └── favicon.png
+│
+├── /images
+│    ├── /fullsize
+│    │    ├── /robbie
+│    │    │    ├── robbiesmall1_web.jpg
+│    │    │    ├── robbiesmall2_web.jpg
+│    │    │    └── ...
+│    │    ├── /parker
+│    │    │    ├── parkersmall1_web.jpg
+│    │    │    └── ...
+│    │    └── /art              # <— your full gallery images go here
+│    │         ├── bloom_web.jpg
+│    │         ├── dusk_web.jpg
+│    │         ├── echoes_web.jpg
+│    │         ├── nova_web.jpg
+│    │         └── horizon_web.jpg
+│    │
+│    └── /thumbnails
+│         ├── /robbie
+│         │    ├── robbiesmall1_thumb.jpg
+│         │    └── ...
+│         ├── /parker
+│         │    ├── parkersmall1_thumb.jpg
+│         │    └── ...
+│         └── /art               # <— smaller thumbnail versions
+│              ├── bloom_thumb.jpg
+│              ├── dusk_thumb.jpg
+│              ├── echoes_thumb.jpg
+│              ├── nova_thumb.jpg
+│              └── horizon_thumb.jpg

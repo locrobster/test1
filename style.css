@@ -1,0 +1,1213 @@
+/* =========================================================
+   LocRobster Studios — Optimized Master Stylesheet
+   (Maintains visuals for all pages: Index, Gallery, Shop, About, Contact)
+   ========================================================= */
+
+/* === GLOBAL VARIABLES & BASE STYLES === */
+:root {
+  --bg1: #4b1f9e;
+  --bg2: #6a3db5;
+  --bg3: #a153d5;
+  --text: #f7f8fb;
+  /* Gallery spacing: desktop default is 30px padding and 20px gap */
+  --gallery-padding: 30px;
+  --gallery-gap: 20px;
+  /* page-side-space creates a small gap between containers and the viewport edge
+     Use clamp() so it scales smoothly from 12px up to 32px based on viewport width */
+  --page-side-space: clamp(12px, 2.5vw, 32px);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to right, var(--bg1), var(--bg2), var(--bg3));
+  color: var(--text);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* === UNIFIED RESPONSIVE BANNER SYSTEM === */
+.banner,
+.banner.cropped {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1920 / 320;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgba(209, 213, 219, 0.3);
+}
+
+.banner img,
+.banner.cropped img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.banner img:first-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.banner img:last-child {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  .banner,
+  .banner.cropped {
+    aspect-ratio: 1920 / 600;
+  }
+}
+
+/* On mobile, show the full banner image (uncropped) while keeping the logo centered */
+@media (max-width: 900px) {
+  .banner img,
+  .banner.cropped img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center top;
+  }
+
+  .banner {
+    align-items: flex-start; /* keep the top of the image visible */
+    padding-top: 8px;
+  }
+}
+
+/* === NAVIGATION BUTTONS === */
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 32px;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 25px rgba(185, 160, 255, 0.22);
+  margin: 40px auto;
+  width: fit-content;
+  max-width: 95vw;
+  overflow-x: auto;
+}
+.button-container::-webkit-scrollbar { display: none; }
+
+.frosted-btn {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  padding: 12px 26px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.frosted-btn:hover {
+  background: linear-gradient(145deg, rgba(60, 52, 118, 0.7), rgba(70, 60, 130, 0.6));
+  transform: translateY(-2px);
+}
+
+/* Active Button State */
+.frosted-btn.active {
+  background: linear-gradient(145deg, rgba(45, 39, 87, 0.8), rgba(60, 52, 118, 0.75));
+  color: #f8f8ff;
+  transform: translateY(-2px);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.4),
+              0 0 10px rgba(50, 40, 90, 0.5);
+}
+
+@media (max-width: 700px) {
+  .frosted-btn.active { display: none; }
+  .button-container {
+    gap: 10px;
+    padding: 6px 8px;
+    border-radius: 0;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.45),
+                0 0 18px rgba(180,160,255,0.18);
+  }
+  .frosted-btn {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 24px;
+  }
+}
+
+/* Responsive gallery spacing: tablet and phone */
+@media (max-width: 1024px) {
+  :root {
+    --gallery-padding: 22px; /* tablet */
+    --gallery-gap: 16px;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --gallery-padding: 12px; /* phone */
+    --gallery-gap: 10px;
+  }
+}
+
+/* Ensure container calc values don't underflow on very small screens */
+@media (max-width: 480px) {
+  .index-featured-gallery,
+  .glass-frame,
+  .gallery-grid-full,
+  .gallery-grid-mini,
+  .about-layered-section {
+    width: calc(100% - (var(--page-side-space) * 2));
+    max-width: calc(100% - (var(--page-side-space) * 2));
+    margin-left: var(--page-side-space);
+    margin-right: var(--page-side-space);
+  }
+}
+
+/* === INDEX PAGE FEATURED 3×1 GALLERY === */
+.index-featured-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gallery-gap);
+  width: calc(100% - (var(--page-side-space) * 2));
+  max-width: calc(1200px - (var(--page-side-space) * 2));
+  margin: 60px var(--page-side-space);
+  padding: var(--gallery-padding);
+  border-radius: 40px;
+  background-color: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+}
+
+/* Modifier: featured-2x2 will make the featured gallery render as a 2x2 grid */
+.index-featured-gallery.featured-2x2 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 1fr;
+}
+
+@media (max-width: 900px) {
+  .index-featured-gallery.featured-2x2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.index-featured-gallery .thumb {
+  aspect-ratio: 1 / 1;
+  border-radius: 30px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+.index-featured-gallery .thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+  border-radius: inherit; display: block;
+  transition: transform 0.6s ease, filter 0.6s ease;
+}
+.index-featured-gallery .thumb:hover img {
+  transform: scale(1.04);
+  filter: brightness(1.1) saturate(1.2);
+}
+
+/* === INDEX PAGE: 2×2 LIGHTBOX THUMB GRID (Restored + Unified) === */
+.glass-frame.lightbox-thumbs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;                             /* even thumbnail spacing */
+  padding: 16px;                         /* tighter frame spacing */
+  border-radius: 32px;                   /* consistent rounded corners */
+
+  /* Frosted-glass container background */
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px) saturate(180%);
+  margin: 40px auto;
+  width: fit-content;
+  max-width: 90%;
+}
+
+/* Thumbnail visuals inside the grid */
+.glass-frame.lightbox-thumbs .thumb {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+.glass-frame.lightbox-thumbs .thumb:hover {
+  transform: scale(1.04);
+  filter: brightness(1.1) saturate(1.2);
+}
+
+/* Responsive tweaks */
+@media (max-width: 700px) {
+  .glass-frame.lightbox-thumbs {
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 24px;
+  }
+}
+
+/* === INDEX PAGE: Tightened Frosted Container Styling === */
+
+/* Featured 3×1 gallery */
+.index-featured-gallery {
+  padding: 16px;          /* tighter frame */
+  gap: 14px;              /* balanced spacing between thumbs */
+  border-radius: 32px;    /* match gallery page */
+}
+
+/* 2×2 lightbox thumb grid */
+.glass-frame.lightbox-thumbs {
+  padding: 16px;          /* same padding as gallery page */
+  gap: 14px;
+  border-radius: 32px;
+}
+
+/* === SIMPLE LIGHTBOX (used by index 2×2 grid) === */
+.lightbox-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.lightbox-content img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+
+/* === SIMPLE LIGHTBOX (used by index 2×2 grid) === */
+.simple-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;                /* ✅ higher than Swiper’s 1000 */
+  background: rgba(50, 0, 80, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.simple-lightbox.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.simple-lightbox .lightbox-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.simple-lightbox .lightbox-content img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+
+/* X button stays top-right and visible above everything */
+.simple-lightbox .close-btn {
+  position: fixed;
+  top: 22px;
+  right: 24px;
+  font-size: 44px;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 4500;               /* ✅ ensures it’s always on top */
+  text-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+/* Mobile tweaks */
+@media (max-width: 700px) {
+  .index-featured-gallery,
+  .glass-frame.lightbox-thumbs {
+    padding: 10px;
+    gap: 8px;
+    border-radius: 24px;
+  }
+}
+
+/* === MERCH FEATURED: Top (1) + Bottom (2) layout === */
+.merch-featured {
+  /* Use a 2-column grid: top spans both columns */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 14px;
+  padding: 16px;           /* same padding rhythm as other containers */
+  align-items: start;
+}
+
+.merch-featured .thumb {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.merch-featured .thumb.top {
+  grid-column: 1 / -1;     /* span both columns */
+  /* keep natural aspect ratio for the image: let height be auto */
+}
+
+/* Override square thumbnail rule for the top merch image so it matches its natural aspect ratio */
+.merch-featured .thumb.top {
+  /* give the top container a landscape frame so it reads shorter */
+  aspect-ratio: 16 / 9;
+  align-self: start;       /* ensure grid row height follows the image */
+  display: block;
+}
+
+.merch-featured .thumb.top img {
+  width: 100%;
+  height: 100%;
+  /* crop slightly to fill the landscape frame while keeping focal area */
+  object-fit: cover;
+  display: block;
+}
+
+.merch-featured .thumb.bottom {
+  aspect-ratio: 3 / 4;     /* portrait thumbnails (taller than wide) and match each other */
+}
+
+.merch-featured .thumb.bottom img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* fill squares */
+  display: block;
+}
+
+/* Ensure equal padding to container edges on smaller screens */
+@media (max-width: 700px) {
+  .merch-featured {
+    grid-template-columns: 1fr;
+  }
+  .merch-featured .thumb.bottom {
+    aspect-ratio: auto;     /* stack vertically on small screens */
+  }
+  .merch-featured .thumb.top {
+    aspect-ratio: 4 / 3;    /* make top less wide on narrow screens for better balance */
+  }
+}
+
+/* Mobile: add slight horizontal padding so content doesn't touch the device edge */
+@media (max-width: 700px) {
+  /* Ensure major containers respect the body padding and don't overflow */
+  .index-featured-gallery,
+  .glass-frame,
+  .about-layered-section {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0; /* containers already have inner padding; avoid double-padding */
+    padding-right: 0;
+  }
+}
+
+/* Apply the same responsive internal padding and gap to all gallery-like containers
+   so each section keeps equal spacing to its edges while thumbnails stay section-specific */
+.index-featured-gallery,
+.glass-frame,
+.glass-frame.lightbox-thumbs,
+.lightbox-thumbs,
+.glass-frame.contact-grid,
+.about-layered-section,
+.gallery-section,
+.shop-frame {
+  padding: var(--gallery-padding);
+  gap: var(--gallery-gap);
+  box-sizing: border-box;
+  width: calc(100% - (var(--page-side-space) * 2));
+  max-width: calc(1200px - (var(--page-side-space) * 2));
+  margin-left: var(--page-side-space);
+  margin-right: var(--page-side-space);
+}
+
+/* When used specifically as a page-level wrapper for a full grid, don't make the
+   outer section a grid itself; let the inner .gallery-grid-full be the grid. */
+.index-featured-gallery.gallery-wrap {
+  display: block;
+}
+
+/* For the full gallery page (gallery-wrap) ensure columns don't shrink too small
+   so thumbnails match the visual scale on the index page */
+.index-featured-gallery.gallery-wrap > .gallery-grid-full {
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+}
+
+@media (max-width: 999px) {
+  .index-featured-gallery.gallery-wrap > .gallery-grid-full {
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .index-featured-gallery.gallery-wrap > .gallery-grid-full {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}
+
+/* Make featured and merch sections match the About section's inner padding scale */
+.index-featured-gallery,
+.merch-featured {
+  padding: calc(var(--gallery-padding) * 1.1);
+}
+
+/* Ensure grid containers respect the gap variable */
+.gallery-grid-mini,
+.gallery-grid-full,
+.index-featured-gallery,
+.glass-frame.lightbox-thumbs {
+  display: grid;
+  grid-gap: var(--gallery-gap);
+}
+
+/* === TEMPORARY VISUAL GUIDE ===
+   Toggle by running in the browser console:
+     document.body.classList.add('show-guides')
+   Remove with:
+     document.body.classList.remove('show-guides')
+*/
+body.show-guides { --guide-outer: rgba(120, 200, 255, 0.18); --guide-inner: rgba(255,255,255,0.18); --guide-accent: rgba(255,200,0,0.95); }
+
+body.show-guides * { transition: none !important; }
+
+/* Outer outline for gallery containers */
+body.show-guides .index-featured-gallery,
+body.show-guides .glass-frame,
+body.show-guides .gallery-grid-full,
+body.show-guides .gallery-grid-mini,
+body.show-guides .about-layered-section {
+  position: relative;
+  outline: 3px solid var(--guide-outer);
+}
+
+/* Inner padding inset (visualize the content area inside padding) */
+body.show-guides .index-featured-gallery::before,
+body.show-guides .glass-frame::before,
+body.show-guides .gallery-grid-full::before,
+body.show-guides .gallery-grid-mini::before,
+body.show-guides .about-layered-section::before {
+  content: '';
+  position: absolute;
+  inset: var(--gallery-padding);
+  border: 2px dashed var(--guide-inner);
+  pointer-events: none;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08) inset;
+}
+
+/* Thumb outlines and numbering */
+body.show-guides { counter-reset: guide-thumb; }
+body.show-guides .thumb {
+  position: relative;
+  z-index: 2;
+  outline: 2px solid rgba(255,255,255,0.06);
+}
+body.show-guides .thumb::after {
+  counter-increment: guide-thumb;
+  content: counter(guide-thumb);
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--guide-accent);
+  color: #111;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+/* Slight label for container type */
+body.show-guides .index-featured-gallery::after {
+  content: 'gallery container';
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  font-size: 12px;
+  padding: 4px 8px;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* Dev toggle button (persistent) */
+.dev-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9999;
+  background: rgba(20,20,30,0.9);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+.dev-toggle.active {
+  background: linear-gradient(90deg, rgba(255,200,60,0.95), rgba(255,160,40,0.95));
+  color: #111;
+}
+
+
+
+/* === UNIVERSAL THUMBNAIL STYLING (for all grids) === */
+.thumb {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3),
+              inset 0 0 25px rgba(255,255,255,0.1);
+  transition: box-shadow 0.6s ease, background 0.6s ease;
+}
+.thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+  border-radius: inherit; transition: transform 1s ease, filter 1s ease;
+}
+
+/* Force square thumbnails inside the index-style gallery so the grid remains 3xN with square cells */
+.index-featured-gallery .thumb {
+  aspect-ratio: 1 / 1;
+}
+.thumb:hover {
+  background: rgba(255,255,255,0.22);
+  box-shadow: 0 0 25px rgba(190,160,255,0.35),
+              0 8px 30px rgba(0,0,0,0.4);
+}
+.thumb:hover img {
+  transform: scale(1.04);
+  filter: brightness(1.1) saturate(1.2);
+}
+
+/* === LIGHTBOX OVERLAY (for all gallery pages) === */
+.lightbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.lightbox.active { opacity: 1; pointer-events: all; }
+/* Fix: keep blur behind the image */
+.lightbox::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(50, 0, 80, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 0; /* ✅ pushes blur behind the image */
+}
+
+.lightbox img {
+  position: relative;
+  z-index: 2;
+  opacity: 0;                /* Start invisible */
+  transform: scale(0.98);    /* Slightly smaller for a subtle pop-in */
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* When lightbox becomes active, image fades in smoothly */
+.lightbox.active img {
+  opacity: 1;
+  transform: scale(1);
+}
+/* Swiper */
+/* === Lightbox Swiper Container (Fixed Centering) === */
+.swiper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;              /* ✅ no right gap */
+  box-sizing: border-box;
+}
+
+.swiper-wrapper {
+  display: flex;
+  justify-content: center;       /* ✅ keep slides centered in all widths */
+  align-items: center;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  margin: 0 auto;                /* ✅ force perfect horizontal centering */
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Guarantee perfect horizontal centering */
+.swiper-slide img {
+  display: block;
+  margin: 0 auto;       /* ✅ center image regardless of viewport size */
+}
+
+@media (max-width: 900px) {
+  .swiper {
+    padding: 0 3vw;
+  }
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.swiper-slide img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+.close-btn {
+ position: fixed;  /* change from fixed → absolute */
+  right: 2vw;          /* make it responsive */
+  right: 24px;
+  font-size: 44px;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 3000;
+}
+
+/* Fix: ensure slides are centered horizontally, ignoring close button */
+.lightbox.active .swiper {
+  justify-content: center;
+}
+
+.lightbox.active .swiper-wrapper {
+  justify-content: center;
+  align-items: center;
+}
+
+/* === Lightbox Centering Correction === */
+.swiper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0; /* remove right bias */
+  margin: 0 auto; /* ensure entire swiper is centered */
+}
+
+.swiper-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: none !important; /* neutralize Swiper offset */
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  margin: 0 auto;
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  object-fit: contain;
+}
+
+/* keep images proportional on narrow screens */
+@media (max-width: 700px) {
+  .swiper-slide img {
+    max-width: 92vw;
+  }
+}
+
+/* Ensure lightbox stays perfectly centered even with the close button */
+.lightbox.active .swiper {
+  justify-content: center;
+}
+.lightbox.active .swiper-wrapper {
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+/* === GALLERY SECTION: Tighter, Even Padding === */
+.gallery-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 60px var(--page-side-space);
+  padding: var(--gallery-padding);
+  width: calc(100% - (var(--page-side-space) * 2));
+  max-width: calc(1200px - (var(--page-side-space) * 2));
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border-radius: 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  backdrop-filter: blur(10px) saturate(180%);
+  max-width: 90%;
+}
+
+/* Inner grid spacing */
+.gallery-grid-full {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gallery-gap);    /* use unified gap */
+  padding: 0;                 /* outer section provides the padding now */
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Ensure gallery page thumbs are a reasonable, consistent size (3 columns but with a min width)
+   so they appear larger inside the same container used on the index page. */
+.index-featured-gallery > .gallery-grid-full {
+  /* Auto-resizing 3-column grid; thumbs are square via aspect-ratio on .thumb */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: auto; /* height determined by content (thumb's aspect-ratio) */
+}
+
+/* Desktop tweaks: ensure columns don't grow too large on very wide screens */
+@media (min-width: 1400px) {
+  .index-featured-gallery > .gallery-grid-full {
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 999px) {
+  .index-featured-gallery > .gallery-grid-full {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .index-featured-gallery > .gallery-grid-full {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Responsive tweak for mobile */
+@media (max-width: 700px) {
+  .gallery-section {
+    padding: 10px;
+    border-radius: 24px;
+  }
+  .gallery-grid-full {
+    gap: 8px;
+    padding: 6px;
+  }
+}
+
+/* === SHOP PAGE === */
+.shop-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 30px;
+  width: min(92vw, 1000px);
+  margin-top: 40px;
+  text-align: center;
+}
+.shop-frame .info-text {
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 15px;
+  padding: 14px 18px;
+  margin: 10px 0 15px;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+.shop-frame iframe {
+  width: 100%;
+  height: 700px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* === ABOUT PAGE === */
+.about-layered-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* match gallery container sizing and side spacing */
+  width: calc(100% - (var(--page-side-space) * 2));
+  max-width: calc(1200px - (var(--page-side-space) * 2));
+  margin: 60px var(--page-side-space);
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border-radius: 40px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  padding: calc(var(--gallery-padding) * 1.1);
+}
+.about-layered-base {
+  /* Inner base becomes a simple inner wrapper; clear background/padding so section background matches galleries */
+  background: transparent;
+  background-image: none;
+  padding: 0;
+  width: 100%;
+}
+.about-layered-accent {
+  background: linear-gradient(180deg, rgba(93, 8, 154, 0.65), rgba(110,130,200,0.75));
+  border-radius: 30px;
+  padding: 22px 28px;
+}
+.about-layered-text {
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* === CONTACT PAGE GRID === */
+.glass-frame.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  padding: 25px;
+  width: 100%;
+  max-width: 800px;
+  margin: 60px auto;
+  border-radius: 40px;
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+}
+.glass-frame.contact-grid .thumb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+.glass-frame.contact-grid .thumb:hover {
+  transform: scale(1.05);
+  filter: brightness(1.15);
+}
+@media (max-width: 768px) {
+  .glass-frame.contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    padding: 18px;
+  }
+}
+
+/* === FOOTER === */
+.footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 22px 16px 30px;
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(14px) saturate(160%);
+  border-top: 1px solid rgba(255,255,255,0.22);
+  box-shadow: 0 0 40px rgba(150,100,255,0.35) inset,
+              0 -8px 28px rgba(150,100,255,0.25);
+  gap: 12px;
+  margin-top: 24px;
+}
+.socials { display: flex; gap: 18px; }
+.socials a {
+  font-size: 1.6rem;
+  color: var(--text);
+  transition: transform .2s ease, color .2s ease;
+}
+.socials a:hover { transform: translateY(-2px); color: #c9a9ff; }
+.copyright {
+  font-family: Georgia, serif;
+  font-size: .9rem;
+  opacity: .9;
+  margin-top: 6px;
+}
+
+/* === LIGHTBOX NAVIGATION ARROWS === */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #fff;
+  opacity: 0.8;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 3000; /* keep above blur and image */
+}
+
+/* Hide arrows for single-image lightbox (merch thumbnails) */
+.lightbox.single-image .swiper-button-next,
+.lightbox.single-image .swiper-button-prev {
+  display: none;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Icon size */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 40px;
+}
+
+/* Optional fade-in on hover over lightbox area */
+.lightbox:hover .swiper-button-next,
+.lightbox:hover .swiper-button-prev {
+  opacity: 1;
+}
+
+/* Hide arrows on mobile if desired */
+@media (max-width: 600px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    opacity: 0.6;
+    font-size: 30px;
+  }
+}
+
+/* === MINI GALLERY SECTION (2×2 Random Grid) === */
+.gallery-grid-mini {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  padding: 18px;
+  margin: 40px auto;
+  max-width: 90%;
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border-radius: 32px;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px) saturate(180%);
+}
+
+.gallery-grid-mini .thumb {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.gallery-grid-mini .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.gallery-grid-mini .thumb img:hover {
+  transform: scale(1.04);
+}
+
+/* Responsive: keep 2×2 grid but scale to fit on mobile */
+@media (max-width: 700px) {
+  .gallery-grid-mini {
+    max-width: 95%;
+    gap: 12px;
+    padding: 14px;
+  }
+}
+
+/* === ROBBIE + PARKER GALLERY (lightbox-thumbs) FIXED HEIGHT === */
+.lightbox-thumbs {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  width: 100%;
+  max-width: 90%;
+  margin: 40px auto;
+  padding: 18px;
+  /* ✅ allow container to size itself correctly */
+  height: auto;
+  min-height: fit-content;
+  overflow: visible; /* let content define height */
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border-radius: 32px;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px) saturate(180%);
+}
+
+/* ✅ make sure each thumb keeps its full height */
+.lightbox-thumbs .thumb {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.lightbox-thumbs .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.lightbox-thumbs .thumb img:hover {
+  transform: scale(1.04);
+}
+
+/* 📱 MOBILE FIX */
+@media (max-width: 700px) {
+  .lightbox-thumbs {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 14px;
+    max-width: 95%;
+    height: auto !important;
+    min-height: fit-content;
+  }
+
+  .lightbox-thumbs .thumb {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* About section mobile reduction */
+@media (max-width: 700px) {
+  .about-layered-section {
+    margin: 36px auto;
+  }
+  .about-layered-base {
+    padding: calc(var(--gallery-padding) * 0.9);
+    min-height: 220px;
+  }
+  .about-layered-accent {
+    padding: 18px;
+  }
+}
+
+/* === UNIVERSAL LIGHTBOX STYLES === */
+.custom-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(12px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
+  transition: opacity 0.3s ease;
+}
+.custom-lightbox.active {
+  display: flex;
+}
+
+.custom-lightbox img {
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: 20px;
+  object-fit: contain;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+.close-btn {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  font-size: 40px;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10000;
+  transition: transform 0.2s ease;
+}
+.close-btn:hover { transform: scale(1.1); }
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 60px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+.nav-btn:hover { opacity: 1; }
+.nav-btn.prev { left: 25px; }
+.nav-btn.next { right: 25px; }

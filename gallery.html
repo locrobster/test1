@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LocRobster Studios — Gallery</title>
+  <link rel="icon" type="image/png" href="graphics/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+</head>
+
+<body class="subpage">
+  <!-- Banner -->
+  <div class="banner cropped">
+    <img src="graphics/mainbanner.png" alt="Main Banner">
+    <img src="graphics/bannerlogo.png" alt="LocRobster Studios Logo">
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="button-container">
+    <a href="index.html" class="frosted-btn"><i data-lucide="home"></i> Home</a>
+    <a href="shop.html" class="frosted-btn"><i data-lucide="shopping-bag"></i> Shop</a>
+    <span class="frosted-btn active"><i data-lucide="image"></i> Gallery</span>
+    <a href="about.html" class="frosted-btn"><i data-lucide="user"></i> About</a>
+    <a href="contact.html" class="frosted-btn"><i data-lucide="mail"></i> Contact</a>
+  </div>
+
+  <!-- Full Gallery Section (use same container style as index page) -->
+  <section class="index-featured-gallery gallery-wrap">
+    <div class="gallery-grid-full"></div>
+  </section>
+
+  <!-- Lightbox Overlay -->
+  <div class="lightbox" id="lightbox">
+    <button class="close-btn" aria-label="Close">&times;</button>
+    <div class="swiper">
+      <div class="swiper-wrapper"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="socials">
+      <a href="https://www.tiktok.com/@locrobster" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.instagram.com/locrobster_studios" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.youtube.com/@LocRobster" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="https://x.com/locrobster" target="_blank"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://www.twitch.tv/locrobster" target="_blank"><i class="fab fa-twitch"></i></a>
+    </div>
+    <div class="copyright">© 2025 LocRobster Studios. All Rights Reserved.</div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <!-- Swipe-to-close support -->
+  <script>
+    (function() {
+      const lightbox = document.getElementById("lightbox");
+      let touchStartY = 0;
+      lightbox.addEventListener("touchstart", (e) => { touchStartY = e.touches[0].clientY; });
+      lightbox.addEventListener("touchend", (e) => {
+        const touchEndY = e.changedTouches[0].clientY;
+        const distance = touchStartY - touchEndY;
+        if (distance > 100 && typeof closeLightbox === "function") closeLightbox();
+      });
+    })();
+  </script>
+</body>
+</html>
