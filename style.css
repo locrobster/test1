@@ -261,7 +261,7 @@ body {
 @media (max-width: 700px) {
   .frosted-btn.active { display: inline-flex; }
   .button-container {
-    gap: 10px;
+    gap: 8px;
     padding: 6px 8px;
     border-radius: 0;
     box-shadow: 0 8px 18px rgba(0,0,0,0.45),
@@ -269,10 +269,17 @@ body {
   }
   .frosted-btn {
     font-size: 0.85rem;
-    padding: 8px 14px;
+    /* smaller horizontal padding so buttons fit on tighter screens */
+    padding: 8px 10px;
     /* rectangular look on mobile: small corner radius instead of pill */
     border-radius: 6px;
   }
+}
+
+@media (max-width: 480px) {
+  /* Even tighter at the smallest widths to avoid any button clipping */
+  .button-container { gap: 6px; }
+  .button-container .frosted-btn { padding: 6px 8px; font-size: 0.82rem; }
 }
 
 /* Responsive gallery spacing: tablet and phone */
