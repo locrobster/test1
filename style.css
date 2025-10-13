@@ -12,6 +12,8 @@
   /* Gallery spacing: desktop default is 30px padding and 20px gap */
   --gallery-padding: 30px;
   --gallery-gap: 20px;
+  /* Maximum vertical gap between major sections (cap at 24px) */
+  --section-vertical-gap: 24px;
   /* page-side-space creates a small gap between containers and the viewport edge
      Use clamp() so it scales smoothly from 12px up to 32px based on viewport width */
   --page-side-space: clamp(12px, 2.5vw, 32px);
@@ -41,6 +43,24 @@ body {
   align-items: center;
   border-bottom: 1px solid rgba(209, 213, 219, 0.3);
 }
+
+/* Ensure consistent vertical spacing between major page sections */
+.banner + .button-container,
+.button-container + .index-featured-gallery,
+.index-featured-gallery + .index-featured-gallery,
+.index-featured-gallery + .merch-featured,
+.merch-featured + .about-layered-section,
+.about-layered-section + .gallery-grid-mini,
+.gallery-grid-mini + .glass-frame,
+.glass-frame + .gallery-section,
+.gallery-section + .footer,
+.glass-frame + .footer {
+  margin-top: var(--section-vertical-gap) !important;
+  margin-bottom: var(--section-vertical-gap) !important;
+}
+
+/* Also ensure the button-container sits 24px below the banner */
+.banner + .button-container { margin-top: var(--section-vertical-gap) !important; }
 
 .banner img,
 .banner.cropped img {
