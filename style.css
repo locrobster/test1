@@ -89,6 +89,26 @@ body {
   }
 }
 
+/* Mobile: enforce the section vertical gap so large desktop margins (e.g. 60px)
+   don't show on small screens. This caps spacing at --section-vertical-gap. */
+@media (max-width: 700px) {
+  .index-featured-gallery,
+  .merch-featured,
+  .about-layered-section,
+  .gallery-grid-mini,
+  .glass-frame,
+  .gallery-section,
+  .shop-frame,
+  .footer,
+  .button-container {
+    margin-top: var(--section-vertical-gap) !important;
+    margin-bottom: var(--section-vertical-gap) !important;
+  }
+
+  /* Remove any extra margin set on specific containers for small screens */
+  .about-layered-section { margin-left: var(--page-side-space); margin-right: var(--page-side-space); }
+}
+
 /* On mobile, show the full banner image (uncropped) while keeping the logo centered */
 @media (max-width: 900px) {
   .banner img,
