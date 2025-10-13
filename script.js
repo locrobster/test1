@@ -309,12 +309,8 @@ if (galleryContainer) {
         `);
         const dataUri = `data:image/svg+xml;charset=UTF-8,${svg}`;
 
-        const img = document.createElement('img');
-        img.src = dataUri;
-        img.alt = 'Coming Soon';
-        img.style.objectFit = 'cover';
-
-        placeholder.appendChild(img);
+  // Do not append an <img> — keep the placeholder empty so the CSS frosted styling
+  // (and ::after label) renders consistently across browsers.
         // Make it non-clickable (no lightbox)
         placeholder.classList.add('no-lightbox');
         galleryContainer.appendChild(placeholder);
