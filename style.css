@@ -109,7 +109,9 @@ body {
 .banner + .button-container,
 .banner ~ .button-container,
 .banner .button-container {
-  /* Default: place immediately after the banner (no overlap) */
+  /* Default: place immediately after the banner (no overlap)
+     and ensure a fixed 15px gap between banner bottom and bar */
+  margin-top: 15px;
   margin-bottom: 28px;
   z-index: 2000;
 }
@@ -138,8 +140,8 @@ body {
 
 @media (max-width: 900px) {
   .banner + .button-container {
-    /* no overlap on tablet — keep zero top margin */
-    margin-top: 0;
+    /* maintain 15px gap on tablet */
+    margin-top: 15px;
     margin-bottom: 18px;
     padding: 12px 18px;
     gap: 12px;
@@ -156,8 +158,8 @@ body {
     transform: none;
     position: relative;
     width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
-    /* zero overlap on mobile */
-    margin-top: 0;
+    /* maintain 15px gap on mobile */
+    margin-top: 15px;
     margin-bottom: 14px;
     padding: 8px 12px;
     gap: 8px;
