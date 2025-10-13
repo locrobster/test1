@@ -239,7 +239,7 @@ body {
 }
 
 @media (max-width: 700px) {
-  .frosted-btn.active { display: none; }
+  .frosted-btn.active { display: inline-flex; }
   .button-container {
     gap: 10px;
     padding: 6px 8px;
