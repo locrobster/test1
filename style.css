@@ -647,15 +647,47 @@ body.show-guides .index-featured-gallery::after {
 
 /* Coming soon placeholder visuals */
 .thumb.coming-soon {
-  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(240,238,248,0.96));
+  /* match the frosted look of other thumbs */
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18), inset 0 0 18px rgba(255,255,255,0.04);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4b1f9e;
+  color: var(--bg1);
+  position: relative;
+  overflow: hidden;
 }
-.thumb.coming-soon img { width: 100%; height: 100%; object-fit: cover; }
-.thumb.coming-soon::after {
+.thumb.coming-soon img { display: none; }
+.thumb.coming-soon::before {
   content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  pointer-events: none;
+}
+.thumb.coming-soon::after {
+  content: 'Coming Soon';
+  position: relative;
+  z-index: 2;
+  font-family: Inter, Arial, sans-serif;
+  font-weight: 700;
+  color: var(--bg1);
+  background: rgba(255,255,255,0.12);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+/* Gentle pulse to indicate a placeholder */
+.thumb.coming-soon {
+  animation: comingSoonPulse 2.6s ease-in-out infinite;
+}
+@keyframes comingSoonPulse {
+  0% { box-shadow: 0 8px 20px rgba(0,0,0,0.12); transform: translateZ(0); }
+  50% { box-shadow: 0 14px 36px rgba(0,0,0,0.18); transform: translateY(-2px); }
+  100% { box-shadow: 0 8px 20px rgba(0,0,0,0.12); transform: translateZ(0); }
 }
 
 /* Force square thumbnails inside the index-style gallery so the grid remains 3xN with square cells */

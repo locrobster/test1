@@ -249,6 +249,20 @@ if (galleryContainer) {
   function loadArtGallery() {
     const checks = [];
 
+    // Helper: try HEAD first (fast), then fallback to Image() on error/CORS
+    function checkThumbExists(url) {
+      return fetch(url, { method: 'HEAD' })
+        .then(res => !!res && res.ok)
+        .catch(() => {
+          return new Promise(resolve => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = url;
+          });
+        });
+    }
+
     function appendThumb(i) {
       const thumbPath = `images/thumbnails/${folder}/${folder}${i}.jpg`;
       const fullPath = `images/fullsize/${folder}/${folder}${i}.jpg`;
@@ -264,18 +278,16 @@ if (galleryContainer) {
       thumbDiv.addEventListener("click", () => openLightbox([fullPath]));
     }
 
-    // Build an array of HEAD requests (one per possible image)
+    // Build an array of checks (HEAD with Image fallback)
     for (let i = 1; i <= maxImages; i++) {
       const thumbPath = `images/thumbnails/${folder}/${folder}${i}.jpg`;
-      const p = fetch(thumbPath, { method: "HEAD" })
-        .then(res => {
-          if (res.ok) {
-            appendThumb(i);
-            return true;
-          }
-          return false;
-        })
-        .catch(() => false);
+      const p = checkThumbExists(thumbPath).then(ok => {
+        if (ok) {
+          appendThumb(i);
+          return true;
+        }
+        return false;
+      });
       checks.push(p);
     }
 
