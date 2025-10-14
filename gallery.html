@@ -58,6 +58,25 @@
   <script>lucide.createIcons();</script>
 
   <!-- Swipe-to-close support -->
+
+  <!-- Defensive: remove any leftover dev guide artifacts (in case of cached HTML/CSS) -->
+  <script>
+    (function(){
+      try {
+        document.documentElement.classList.remove('show-guides');
+        document.body.classList.remove('show-guides');
+        var t = document.getElementById('toggleGuides'); if (t) t.remove();
+        document.querySelectorAll('.dev-toggle').forEach(function(el){ el.remove(); });
+        // Force stylesheet to latest version (cache-bust) if not already
+        document.querySelectorAll('link[rel="stylesheet"]').forEach(function(link){
+          if (link.href && link.href.indexOf('style.css') !== -1) {
+            var newHref = 'style.css?v=20251013-01';
+            if (link.href.indexOf('20251013-01') === -1) link.href = newHref;
+          }
+        });
+      } catch(e) { /* swallow errors */ }
+    })();
+  </script>
   <script>
     (function() {
       const lightbox = document.getElementById("lightbox");

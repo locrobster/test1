@@ -781,7 +781,8 @@ body {
   align-items: center;
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  /* Raise above the navigation/button bar (which uses z-index up to 3000) */
+  z-index: 100500;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
