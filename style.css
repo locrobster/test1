@@ -149,11 +149,10 @@ body {
 .banner + .button-container,
 .banner ~ .button-container,
 .banner .button-container {
-  /* Default: place immediately after the banner (no overlap)
-     and ensure a fixed 15px gap between banner bottom and bar */
-  margin-top: 15px;
+  /* Place immediately after the banner with a consistent gap; avoid overlap */
+  margin-top: var(--section-vertical-gap);
   margin-bottom: 28px;
-  z-index: 2000;
+  z-index: 2000; /* sit above banner but below other high chrome */
 }
 
 /* If the button container is inside the banner, keep it in-flow so it sits
@@ -174,7 +173,8 @@ body {
   position: relative;
   left: 0;
   width: auto;
-  margin-top: 0;
+  /* ensure the sibling container keeps the standard section spacing */
+  margin-top: var(--section-vertical-gap);
   margin-bottom: 28px;
 }
 
@@ -1364,3 +1364,45 @@ body {
 .nav-btn:hover { opacity: 1; }
 .nav-btn.prev { left: 25px; }
 .nav-btn.next { right: 25px; }
+
+/* ------------------------------------------------------------------
+   Mobile: unify side spacing and fix small-screen asymmetry
+   This block enforces a single source-of-truth for page-side spacing
+   on small screens so galleries, merch, and about sections align.
+   ------------------------------------------------------------------ */
+@media (max-width: 700px) {
+  .index-featured-gallery,
+  .merch-featured,
+  .about-layered-section,
+  .glass-frame,
+  .gallery-grid-full,
+  .gallery-grid-mini {
+    width: calc(100% - (var(--page-side-space) * 2));
+    max-width: calc(100% - (var(--page-side-space) * 2));
+    margin-left: var(--page-side-space);
+    margin-right: var(--page-side-space);
+    box-sizing: border-box;
+    /* remove extra outer padding that caused double-indentation */
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Keep merch layout proportions: top landscape with two matching portrait bottoms */
+  .merch-featured {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    grid-auto-rows: auto; /* allow rows to size naturally */
+  }
+  .merch-featured .thumb.bottom { width: 100%; }
+
+  /* Slight cap on top merch image height so it doesn't dominate very small viewports */
+  .merch-featured .thumb.top img {
+    max-height: 36vh;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Ensure featured 2x2 thumbnails keep square cells on small screens */
+  .index-featured-gallery.featured-2x2 .thumb { aspect-ratio: 1 / 1; }
+}
