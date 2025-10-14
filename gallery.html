@@ -12,7 +12,7 @@
   <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 </head>
 
-<body class="subpage show-guides">
+<body class="subpage">
   <!-- Banner -->
   <div class="banner cropped">
     <img src="graphics/mainbanner.png" alt="Main Banner">
@@ -54,9 +54,6 @@
     <div class="copyright">© 2025 LocRobster Studios. All Rights Reserved.</div>
   </footer>
 
-  <!-- Dev: persistent visual-guide toggle (static) -->
-  <button id="toggleGuides" class="dev-toggle" aria-pressed="false" title="Toggle visual guides">Guides</button>
-
   <script src="script.js?v=20251013-01"></script>
   <script>lucide.createIcons();</script>
 
@@ -73,29 +70,7 @@
       });
     })();
   </script>
-  <!-- Dev: persistent visual-guide toggle (moved inside the document so browsers render it) -->
-  <!-- The button + script are intentionally placed before the closing </body> so all browsers, including Safari on iOS, will show the toggle. -->
-  <script>
-    (function(){
-      var control = document.getElementById('toggleGuides');
-      if (!control) return;
-      function updateState() {
-        const enabled = document.body.classList.contains('show-guides');
-        control.setAttribute('aria-pressed', String(enabled));
-        control.textContent = enabled ? 'Guides: ON' : 'Guides';
-        control.classList.toggle('active', enabled);
-      }
-      control.addEventListener('click', () => {
-        document.body.classList.toggle('show-guides');
-        updateState();
-      });
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', updateState);
-      } else {
-        updateState();
-      }
-    })();
-  </script>
+  
 
 </body>
 </html>

@@ -108,30 +108,8 @@
   <div class="nav-btn next" id="nextImage">›</div>
 </div>
 
-<!-- Dev: persistent visual-guide toggle -->
-<button id="toggleGuides" class="dev-toggle" aria-pressed="false" title="Toggle visual guides">Guides</button>
   <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   <script src="script.js?v=20251013-01"></script>
   <script>if (window.lucide && typeof window.lucide.createIcons === 'function') lucide.createIcons();</script>
-
-  <script>
-    // Persistent dev toggle for the visual guides
-    (function(){
-      const btn = document.getElementById('toggleGuides');
-      if (!btn) return;
-      function updateState() {
-        const enabled = document.body.classList.contains('show-guides');
-        btn.setAttribute('aria-pressed', String(enabled));
-        btn.textContent = enabled ? 'Guides: ON' : 'Guides';
-        btn.classList.toggle('active', enabled);
-      }
-      btn.addEventListener('click', () => {
-        document.body.classList.toggle('show-guides');
-        updateState();
-      });
-      // initialize state on load
-      document.addEventListener('DOMContentLoaded', updateState);
-    })();
-  </script>
 </body>
 </html>
