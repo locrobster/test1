@@ -1027,6 +1027,15 @@ body {
   }
 }
 
+/* Ensure gallery-wrap (full gallery page) uses only the outer wrapper's padding
+   so thumbnails have equal spacing inside the PNG-backed container. This
+   overrides the generic mobile `.gallery-grid-full { padding: 6px }`. */
+.index-featured-gallery.gallery-wrap > .gallery-grid-full {
+  padding: 0 !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* === SHOP PAGE === */
 .shop-frame {
   display: flex;
