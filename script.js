@@ -98,7 +98,8 @@ function openLightbox(images) {
 
  buildSlides(images);
 
-  // Make sure fade-in animations trigger correctly
+  // Ensure scrollbar compensation is fresh, then make sure fade-in animations trigger correctly
+  if (typeof setScrollbarCSSVar === 'function') setScrollbarCSSVar();
   lightbox.style.display = "flex";
   lightbox.style.pointerEvents = "auto";
 
@@ -142,6 +143,36 @@ function openLightbox(images) {
     }
   });
 }
+
+// Measure vertical scrollbar width (useful on mobile browsers that overlay vs reserve)
+function getScrollbarWidth() {
+  // Create a temporary element to measure difference between offsetWidth and clientWidth
+  const outer = document.createElement('div');
+  outer.style.visibility = 'hidden';
+  outer.style.width = '100px';
+  outer.style.overflow = 'scroll';
+  outer.style.position = 'absolute';
+  outer.style.top = '-9999px';
+  document.body.appendChild(outer);
+  const inner = document.createElement('div');
+  inner.style.width = '100%';
+  outer.appendChild(inner);
+  const scrollbarW = outer.offsetWidth - outer.clientWidth;
+  document.body.removeChild(outer);
+  return scrollbarW;
+}
+
+function setScrollbarCSSVar() {
+  const w = getScrollbarWidth();
+  // On mobile browsers the scrollbar may be overlayed (0), but if it's reserving space
+  // we want to shift the swiper by that width to visually center images.
+  document.documentElement.style.setProperty('--scrollbar-w', w + 'px');
+}
+
+// Keep scrollbar compensation up-to-date
+window.addEventListener('resize', setScrollbarCSSVar);
+window.addEventListener('orientationchange', () => setTimeout(setScrollbarCSSVar, 120));
+window.addEventListener('load', setScrollbarCSSVar);
 
 // Close Lightbox
 function closeLightbox() {

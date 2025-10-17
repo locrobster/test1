@@ -930,6 +930,14 @@ body {
   .swiper-slide img {
     max-width: 92vw;
   }
+
+  /* Compensate for mobile scrollbar space by shifting the swiper to the right
+     when the lightbox is active. JS sets --scrollbar-w to the measured scrollbar
+     width; default 0. */
+  .lightbox.active .swiper {
+    padding-left: var(--scrollbar-w, 0px);
+    box-sizing: border-box;
+  }
 }
 
 /* Ensure lightbox stays perfectly centered even with the close button */
