@@ -572,8 +572,9 @@ body {
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 0; /* containers already have inner padding; avoid double-padding */
-    padding-right: 0;
+    /* keep internal padding so thumbnails have breathing room on small screens */
+    padding-left: var(--gallery-padding);
+    padding-right: var(--gallery-padding);
   }
 }
 
@@ -1382,9 +1383,9 @@ body {
     margin-left: var(--page-side-space);
     margin-right: var(--page-side-space);
     box-sizing: border-box;
-    /* remove extra outer padding that caused double-indentation */
-    padding-left: 0;
-    padding-right: 0;
+    /* keep inner padding so thumbs don't touch container edges */
+    padding-left: var(--gallery-padding);
+    padding-right: var(--gallery-padding);
   }
 
   /* Keep merch layout proportions: top landscape with two matching portrait bottoms */
