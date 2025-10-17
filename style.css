@@ -1038,33 +1038,7 @@ body {
 
 /* DEBUG: temporary outlines to diagnose gallery padding issues
    Remove or comment out after verification. */
-.subpage .index-featured-gallery.gallery-wrap { outline: 3px solid rgba(255,0,120,0.35); }
-.subpage .index-featured-gallery.gallery-wrap > .gallery-grid-full { outline: 2px dashed rgba(0,255,120,0.22); }
-
-/* Strong gallery-page override: make the PNG-backed wrapper the single source
-   of inner padding and ensure the inner grid fills that space exactly. This
-   rule is scoped to `.subpage` so it only affects `gallery.html`. */
-.subpage .index-featured-gallery.gallery-wrap {
-  padding: var(--gallery-padding) !important;
-  width: calc(100% - (var(--page-side-space) * 2)) !important;
-  max-width: calc(1200px - (var(--page-side-space) * 2)) !important;
-  margin: 40px var(--page-side-space) !important;
-  box-sizing: border-box !important;
-  background-size: cover !important;
-  background-position: center center !important;
-}
-.subpage .index-featured-gallery.gallery-wrap > .gallery-grid-full {
-  padding: 0 !important;    /* inner grid must not add padding */
-  margin: 0 auto !important;
-  width: 100% !important;   /* fill the wrapper's content box */
-  max-width: none !important;
-  gap: var(--gallery-gap) !important;
-  box-sizing: border-box !important;
-}
-.subpage .index-featured-gallery.gallery-wrap > .gallery-grid-full > .thumb {
-  padding: 0 !important;    /* thumbs themselves shouldn't add extra inner padding */
-  margin: 0 !important;
-}
+/* (gallery debug / overrides removed) */
 
 /* === SHOP PAGE === */
 .shop-frame {
