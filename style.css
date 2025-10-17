@@ -627,12 +627,22 @@ body {
    outer section a grid itself; let the inner .gallery-grid-full be the grid. */
 .index-featured-gallery.gallery-wrap {
   display: block;
+  /* Make the gallery-wrap responsive: fill the available width minus side space
+     and cap at the designed max width. Use gallery padding so the PNG container
+     scales and keeps inner gutters consistent with other sections. */
+  width: calc(100% - (var(--page-side-space) * 2));
+  max-width: calc(1200px - (var(--page-side-space) * 2));
+  margin: 60px var(--page-side-space);
+  padding: var(--gallery-padding);
+  box-sizing: border-box;
 }
 
 /* For the full gallery page (gallery-wrap) ensure columns don't shrink too small
    so thumbnails match the visual scale on the index page */
 .index-featured-gallery.gallery-wrap > .gallery-grid-full {
   grid-template-columns: repeat(3, minmax(200px, 1fr));
+  width: 100%;
+  padding: 0; /* outer container provides padding and background */
 }
 
 @media (max-width: 999px) {
@@ -651,11 +661,12 @@ body {
 @media (max-width: 700px) {
   /* Make gallery-wrap match the index container sizing/padding so visuals align */
   .index-featured-gallery.gallery-wrap {
+    /* Slightly reduced vertical margins on small screens and keep consistent inner padding */
     display: block;
     width: calc(100% - (var(--page-side-space) * 2));
     max-width: calc(1200px - (var(--page-side-space) * 2));
-    margin: 60px var(--page-side-space);
-    padding: calc(var(--gallery-padding) * 1.1);
+    margin: 40px var(--page-side-space);
+    padding: var(--gallery-padding);
     box-sizing: border-box;
   }
   .index-featured-gallery.gallery-wrap > .gallery-grid-full {
@@ -677,8 +688,9 @@ body {
   .index-featured-gallery.gallery-wrap > .gallery-grid-full > .thumb { padding: 0; }
 }
 
-/* Make featured and merch sections match the About section's inner padding scale */
-.index-featured-gallery,
+/* Make featured and merch sections match the About section's inner padding scale
+   Exclude the gallery-wrap variant which has its own outer padding and background. */
+.index-featured-gallery:not(.gallery-wrap),
 .merch-featured {
   padding: calc(var(--gallery-padding) * 1.1);
 }
