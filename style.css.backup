@@ -1,0 +1,1483 @@
+/* =========================================================
+   LocRobster Studios — Optimized Master Stylesheet
+   (Maintains visuals for all pages: Index, Gallery, Shop, About, Contact)
+   ========================================================= */
+
+/* === GLOBAL VARIABLES & BASE STYLES === */
+:root {
+  --bg1: #4b1f9e;
+  --bg2: #6a3db5;
+  --bg3: #a153d5;
+  --text: #f7f8fb;
+  /* Gallery spacing: desktop default is 30px padding and 20px gap */
+  --gallery-padding: 30px;
+  --gallery-gap: 20px;
+  /* Maximum vertical gap between major sections (cap at 24px) */
+  --section-vertical-gap: 24px;
+  /* page-side-space creates a small gap between containers and the viewport edge
+     Use clamp() so it scales smoothly from 12px up to 32px based on viewport width */
+  --page-side-space: clamp(12px, 2.5vw, 32px);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to right, var(--bg1), var(--bg2), var(--bg3));
+  color: var(--text);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* === UNIFIED RESPONSIVE BANNER SYSTEM === */
+.banner,
+.banner.cropped {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1920 / 320;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgba(209, 213, 219, 0.3);
+}
+
+/* Ensure consistent vertical spacing between major page sections */
+.banner + .button-container,
+.button-container + .index-featured-gallery,
+.index-featured-gallery + .index-featured-gallery,
+.index-featured-gallery + .merch-featured,
+.merch-featured + .about-layered-section,
+.about-layered-section + .gallery-grid-mini,
+.gallery-grid-mini + .glass-frame,
+.glass-frame + .gallery-section,
+.gallery-section + .footer,
+.glass-frame + .footer {
+  margin-top: var(--section-vertical-gap) !important;
+  margin-bottom: var(--section-vertical-gap) !important;
+}
+
+/* Also ensure the button-container sits 24px below the banner */
+.banner + .button-container { margin-top: var(--section-vertical-gap) !important; }
+
+.banner img,
+.banner.cropped img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.banner img:first-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.banner img:last-child {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  .banner,
+  .banner.cropped {
+    aspect-ratio: 1920 / 600;
+  }
+}
+
+/* Mobile: enforce the section vertical gap so large desktop margins (e.g. 60px)
+   don't show on small screens. This caps spacing at --section-vertical-gap. */
+@media (max-width: 700px) {
+  .index-featured-gallery,
+  .merch-featured,
+  .about-layered-section,
+  .gallery-grid-mini,
+  .glass-frame,
+  .gallery-section,
+  .shop-frame,
+  .footer,
+  .button-container {
+    margin-top: var(--section-vertical-gap) !important;
+    margin-bottom: var(--section-vertical-gap) !important;
+  }
+
+  /* Remove any extra margin set on specific containers for small screens */
+  .about-layered-section { margin-left: var(--page-side-space); margin-right: var(--page-side-space); }
+}
+
+/* On mobile, show the full banner image (uncropped) while keeping the logo centered */
+@media (max-width: 900px) {
+  .banner img,
+  .banner.cropped img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center top;
+  }
+
+  .banner {
+    align-items: flex-start; /* keep the top of the image visible */
+    padding-top: 8px;
+  }
+}
+
+/* === NAVIGATION BUTTONS === */
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 32px;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 25px rgba(185, 160, 255, 0.22);
+  margin: 40px auto;
+  width: fit-content;
+  max-width: 95vw;
+  overflow-x: auto;
+}
+.button-container::-webkit-scrollbar { display: none; }
+
+/* Anchor the button bar so it visually sits at the bottom edge of the banner.
+   Support three DOM cases: directly after the banner, a later sibling, or placed
+   inside the banner itself. */
+.banner + .button-container,
+.banner ~ .button-container,
+.banner .button-container {
+  /* Place immediately after the banner with a consistent gap; avoid overlap */
+  margin-top: var(--section-vertical-gap);
+  margin-bottom: 28px;
+  z-index: 2000; /* sit above banner but below other high chrome */
+}
+
+/* If the button container is inside the banner, keep it in-flow so it sits
+   immediately after the banner content instead of overlapping. */
+.banner .button-container {
+  position: relative;
+  left: 0;
+  transform: none;
+  bottom: auto;
+  margin: 12px auto 28px;
+  z-index: 3000;
+}
+
+/* If the button container is a sibling after the banner, ensure it sits
+   directly below the banner (no negative overlap). */
+.banner + .button-container,
+.banner ~ .button-container {
+  position: relative;
+  left: 0;
+  width: auto;
+  /* ensure the sibling container keeps the standard section spacing */
+  margin-top: var(--section-vertical-gap);
+  margin-bottom: 28px;
+}
+
+@media
+  .banner + .button-container {
+    /* maintain 15px gap on tablet */
+    margin-top: 15px;
+    margin-bottom: 18px;
+    padding: 12px 18px;
+    gap: 12px;
+  { (max-width: 900px)}
+}
+
+@media
+  /* Mobile: make the bar full-bleed and remove rounded corners */
+  .banner + .button-container,
+  .banner ~ .button-container,
+  .banner .button-container {
+    left: calc(-1 * env(safe-area-inset-left, 0px));
+    right: calc(-1 * env(safe-area-inset-right, 0px));
+    transform: none;
+    position: relative;
+    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+    /* maintain 15px gap on mobile */
+    margin-top: 15px;
+    margin-bottom: 14px;
+    /* remove visible left/right padding so the bar reaches the viewport edges; use
+       device safe-area insets for edge spacing when applicable */
+    padding: 8px 0;
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+    gap: 8px;
+    border-radius: 0;
+  { (max-width: 480px)}
+
+  /* Ensure the button container stretches edge-to-edge on every page
+     (not only when it's a sibling/child of .banner). This overrides the
+     desktop centering rules (fit-content / max-width) at small sizes. */
+  .button-container {
+    position: relative;
+    left: calc(-1 * env(safe-area-inset-left, 0px));
+    right: calc(-1 * env(safe-area-inset-right, 0px));
+    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+    max-width: none;
+    margin: 0;
+    padding: 8px 0;
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+    border-radius: 0;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.45), 0 0 18px rgba(180,160,255,0.18);
+    overflow-x: auto;
+  }
+}
+
+.frosted-btn {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  padding: 12px 26px;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.frosted-btn:hover {
+  background: linear-gradient(145deg, rgba(60, 52, 118, 0.7), rgba(70, 60, 130, 0.6));
+}
+
+/* Active Button State */
+.frosted-btn.active {
+  background: linear-gradient(145deg, rgba(45, 39, 87, 0.8), rgba(60, 52, 118, 0.75));
+  color: #f8f8ff;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.4),
+              0 0 10px rgba(50, 40, 90, 0.5);
+}
+
+@media
+  .frosted-btn.active { display: inline-flex; { (max-width: 700px)}
+  .button-container {
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 0;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.45),
+                0 0 18px rgba(180,160,255,0.18);
+  }
+  .frosted-btn {
+    font-size: 0.85rem;
+    /* smaller horizontal padding so buttons fit on tighter screens */
+    padding: 8px 10px;
+    /* rectangular look on mobile: small corner radius instead of pill */
+    border-radius: 6px;
+  }
+}
+
+@media
+  /* Even tighter at the smallest widths to avoid any button clipping */
+  .button-container { gap: 6px; { (max-width: 480px)}
+  .button-container .frosted-btn { padding: 6px 8px; font-size: 0.82rem; }
+}
+
+/* Responsive gallery spacing: tablet and phone */
+@media
+  :root {
+    --gallery-padding: 22px; /* tablet */
+    --gallery-gap: 16px;
+  { (max-width: 1024px)}
+}
+
+@media
+  :root {
+    --gallery-padding: 12px; /* phone */
+    --gallery-gap: 10px;
+  { (max-width: 700px)}
+}
+
+/* Ensure container calc values don't underflow on very small screens */
+@media
+  .index-featured-gallery,
+  .glass-frame,
+  .gallery-grid-full,
+  .gallery-grid-mini,
+  .about-layered-section {
+    width: calc(100% - (var(--page-side-space) * 2));
+    max-width: calc(100% - (var(--page-side-space) * 2));
+    margin-left: var(--page-side-space);
+    margin-right: var(--page-side-space);
+  { (max-width: 480px)}
+}
+
+/* === INDEX PAGE FEATURED 3×1 GALLERY === */
+.index-featured-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gallery-gap);
+  width: calc(100% - (var(--page-side-space) * 2));
+  max-width: calc(1200px - (var(--page-side-space) * 2));
+  margin: 60px var(--page-side-space);
+  padding: var(--gallery-padding);
+  border-radius: 40px;
+  background-color: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+}
+
+/* Modifier: featured-2x2 will make the featured gallery render as a 2x2 grid */
+.index-featured-gallery.featured-2x2 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 1fr;
+}
+
+@media
+  .index-featured-gallery.featured-2x2 {
+    grid-template-columns: repeat(2, 1fr);
+  { (max-width: 900px)}
+}
+
+.index-featured-gallery .thumb {
+  aspect-ratio: 1 / 1;
+  border-radius: 30px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+.index-featured-gallery .thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+  border-radius: inherit; display: block;
+  transition: transform 0.6s ease, filter 0.6s ease;
+}
+.index-featured-gallery .thumb:hover img {
+  transform: scale(1.04);
+  filter: brightness(1.1) saturate(1.2);
+}
+
+/* === INDEX PAGE: 2×2 LIGHTBOX THUMB GRID (Restored + Unified) === */
+.glass-frame.lightbox-thumbs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;                             /* even thumbnail spacing */
+  padding: 16px;                         /* tighter frame spacing */
+  border-radius: 32px;                   /* consistent rounded corners */
+
+  /* Frosted-glass container background */
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px) saturate(180%);
+  margin: 40px auto;
+  width: fit-content;
+  max-width: 90%;
+}
+
+/* Thumbnail visuals inside the grid */
+.glass-frame.lightbox-thumbs .thumb {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+.glass-frame.lightbox-thumbs .thumb:hover {
+  transform: scale(1.04);
+  filter: brightness(1.1) saturate(1.2);
+}
+
+/* Responsive tweaks */
+@media
+  .glass-frame.lightbox-thumbs {
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 24px;
+  { (max-width: 700px)}
+}
+
+/* === INDEX PAGE: Tightened Frosted Container Styling === */
+
+/* Featured 3×1 gallery */
+.index-featured-gallery {
+  padding: 16px;          /* tighter frame */
+  gap: 14px;              /* balanced spacing between thumbs */
+  border-radius: 32px;    /* match gallery page */
+}
+
+/* 2×2 lightbox thumb grid */
+.glass-frame.lightbox-thumbs {
+  padding: 16px;          /* same padding as gallery page */
+  gap: 14px;
+  border-radius: 32px;
+}
+
+/* === SIMPLE LIGHTBOX (used by index 2×2 grid) === */
+.lightbox-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.lightbox-content img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+
+/* === SIMPLE LIGHTBOX (used by index 2×2 grid) === */
+.simple-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;                /* ✅ higher than Swiper’s 1000 */
+  background: rgba(50, 0, 80, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.simple-lightbox.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.simple-lightbox .lightbox-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.simple-lightbox .lightbox-content img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+}
+
+/* X button stays top-right and visible above everything */
+.simple-lightbox .close-btn {
+  position: fixed;
+  top: 22px;
+  right: 24px;
+  font-size: 44px;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 4500;               /* ✅ ensures it’s always on top */
+  text-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+/* Mobile tweaks */
+@media
+  .index-featured-gallery,
+  .glass-frame.lightbox-thumbs {
+    padding: 10px;
+    gap: 8px;
+    border-radius: 24px;
+  { (max-width: 700px)}
+}
+
+/* === MERCH FEATURED: Top (1) + Bottom (2) layout === */
+.merch-featured {
+  /* Use a 2-column grid: top spans both columns */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 14px;
+  padding: 16px;           /* same padding rhythm as other containers */
+  align-items: start;
+}
+
+.merch-featured .thumb {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.merch-featured .thumb.top {
+  grid-column: 1 / -1;     /* span both columns */
+  /* keep natural aspect ratio for the image: let height be auto */
+}
+
+/* Override square thumbnail rule for the top merch image so it matches its natural aspect ratio */
+.merch-featured .thumb.top {
+  /* give the top container a landscape frame so it reads shorter */
+  aspect-ratio: 16 / 9;
+  align-self: start;       /* ensure grid row height follows the image */
+  display: block;
+}
+
+.merch-featured .thumb.top img {
+  width: 100%;
+  height: 100%;
+  /* crop slightly to fill the landscape frame while keeping focal area */
+  object-fit: cover;
+  display: block;
+}
+
+.merch-featured .thumb.bottom {
+  aspect-ratio: 3 / 4;     /* portrait thumbnails (taller than wide) and match each other */
+}
+
+.merch-featured .thumb.bottom img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* fill squares */
+  display: block;
+}
+
+/* Ensure equal padding to container edges on smaller screens */
+@media
+  /* Keep merch layout as: top (landscape) spanning both columns, bottom two portraits side-by-side */
+  .merch-featured {
+    grid-template-columns: 1fr 1fr; /* two equal columns even on mobile */
+    gap: 10px;
+  { (max-width: 700px)}
+  .merch-featured .thumb.top {
+    grid-column: 1 / -1; /* span both columns */
+    aspect-ratio: 16 / 9; /* maintain landscape feel on small screens */
+  }
+  .merch-featured .thumb.bottom {
+    aspect-ratio: 3 / 4;  /* portrait thumbnails side-by-side */
+  }
+}
+
+/* Mobile: add slight horizontal padding so content doesn't touch the device edge */
+@media
+  /* Ensure major containers respect the body padding and don't overflow */
+  .index-featured-gallery,
+  .glass-frame,
+  .about-layered-section {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    /* keep internal padding so thumbnails have breathing room on small screens */
+    padding-left: var(--gallery-padding);
+    padding-right: var(--gallery-padding);
+  { (max-width: 700px)}
+}
+
+/* Apply the same responsive internal padding and gap to all gallery-like containers
+   so each section keeps equal spacing to its edges while thumbnails stay section-specific */
+.index-featured-gallery,
+.glass-frame,
+.glass-frame.lightbox-thumbs,
+.lightbox-thumbs,
+.glass-frame.contact-grid,
+.about-layered-section,
+.gallery-section,
+.shop-frame {
+  padding: var(--gallery-padding);
+  gap: var(--gallery-gap);
+  box-sizing: border-box;
+  width: calc(100% - (var(--page-side-space) * 2));
+  max-width: calc(1200px - (var(--page-side-space) * 2));
+  margin-left: var(--page-side-space);
+  margin-right: var(--page-side-space);
+}
+
+/* Shop: center content and make embedded shop iframe fully visible */
+.glass-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+}
+
+.glass-frame { max-width: calc(100% - (var(--page-side-space) * 2)); margin-left: var(--page-side-space); margin-right: var(--page-side-space); }
+
+.glass-frame .info-text { max-width: 900px; margin: 0 auto 18px; }
+
+.glass-frame iframe {
+  width: 100%;
+  min-height: 480px; /* let JS set the exact height */
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  margin-top: 6px;
+}
+
+@media
+  .glass-frame iframe { border-radius: 8px; { (max-width: 480px)}
+}
+
+/* When used specifically as a page-level wrapper for a full grid, don't make the
+   outer section a grid itself; let the inner .gallery-grid-full be the grid. */
+.index-featured-gallery.gallery-wrap {
+  display: block;
+  /* Make the gallery-wrap responsive: fill the available width minus side space
+     and cap at the designed max width. Use gallery padding so the PNG container
+     scales and keeps inner gutters consistent with other sections. */
+  width: calc(100% - (var(--page-side-space) * 2));
+  max-width: calc(1200px - (var(--page-side-space) * 2));
+  margin: 60px var(--page-side-space);
+  padding: var(--gallery-padding);
+  box-sizing: border-box;
+}
+
+/* For the full gallery page (gallery-wrap) ensure columns don't shrink too small
+   so thumbnails match the visual scale on the index page */
+.index-featured-gallery.gallery-wrap > 
+
+@media
+  .index-featured-gallery.gallery-wrap > 
+{ (max-width: 999px)}
+
+@media
+  .index-featured-gallery.gallery-wrap > 
+{ (max-width: 600px)}
+
+/* Mobile fix: enforce equal 2-column grid and full-width cells to prevent uneven spacing */
+@media
+  /* Make gallery-wrap match the index container sizing/padding so visuals align */
+  .index-featured-gallery.gallery-wrap {
+    /* Slightly reduced vertical margins on small screens and keep consistent inner padding */
+    display: block;
+    width: calc(100% - (var(--page-side-space) * 2));
+    max-width: calc(1200px - (var(--page-side-space) * 2));
+    margin: 40px var(--page-side-space);
+    padding: var(--gallery-padding);
+    box-sizing: border-box;
+  { (max-width: 700px)}
+  .index-featured-gallery.gallery-wrap > 
+  /* ensure each thumbnail fills its grid cell and remains square */
+  .index-featured-gallery.gallery-wrap .thumb {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+  }
+  .index-featured-gallery.gallery-wrap .thumb img { display: block; }
+  .index-featured-gallery.gallery-wrap > .gallery-grid-full > .thumb { padding: 0; }
+}
+
+/* Make featured and merch sections match the About section's inner padding scale
+   Exclude the gallery-wrap variant which has its own outer padding and background. */
+.index-featured-gallery:not(.gallery-wrap),
+.merch-featured {
+  padding: calc(var(--gallery-padding) * 1.1);
+}
+
+/* Ensure grid containers respect the gap variable */
+.gallery-grid-mini,
+.gallery-grid-full,
+.index-featured-gallery,
+.glass-frame.lightbox-thumbs {
+  display: grid;
+  grid-gap: var(--gallery-gap);
+}
+
+/* Full gallery grid layout */
+.gallery-grid-full {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .gallery-grid-full {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery-grid-full {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dev visual guides removed for production */
+
+
+
+/* === UNIVERSAL THUMBNAIL STYLING (for all grids) === */
+.thumb {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3),
+              inset 0 0 25px rgba(255,255,255,0.1);
+  transition: box-shadow 0.6s ease, background 0.6s ease;
+}
+.thumb img {
+  width: 100%; height: 100%; object-fit: cover;
+  border-radius: inherit; transition: transform 1s ease, filter 1s ease;
+}
+
+/* Coming soon placeholder visuals */
+.thumb.coming-soon {
+  /* purple-tinted frosted glass so it reads like the rest of the UI, not plain white */
+  background: linear-gradient(180deg, rgba(75,31,158,0.12), rgba(75,31,158,0.06));
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18), inset 0 0 18px rgba(255,255,255,0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+}
+.thumb.coming-soon img { display: none !important; }
+.thumb.coming-soon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* subtle glossy top highlight */
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
+  pointer-events: none;
+}
+.thumb.coming-soon::after {
+  content: 'Coming Soon';
+  position: relative;
+  z-index: 2;
+  font-family: Inter, Arial, sans-serif;
+  font-weight: 700;
+  color: rgba(255,255,255,0.98);
+  background: rgba(0,0,0,0.18);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.18) inset;
+}
+/* Gentle pulse to indicate a placeholder */
+.thumb.coming-soon {
+  animation: comingSoonPulse 2.6s ease-in-out infinite;
+}
+@keyframes comingSoonPulse {
+  0% { box-shadow: 0 8px 20px rgba(0,0,0,0.12); transform: translateZ(0); }
+  50% { box-shadow: 0 14px 36px rgba(0,0,0,0.18); transform: translateY(-2px); }
+  100% { box-shadow: 0 8px 20px rgba(0,0,0,0.12); transform: translateZ(0); }
+}
+
+/* Force square thumbnails inside the index-style gallery so the grid remains 3xN with square cells */
+.index-featured-gallery .thumb {
+  aspect-ratio: 1 / 1;
+}
+.thumb:hover {
+  background: rgba(255,255,255,0.22);
+  box-shadow: 0 0 25px rgba(190,160,255,0.35),
+              0 8px 30px rgba(0,0,0,0.4);
+}
+.thumb:hover img {
+  transform: scale(1.04);
+  filter: brightness(1.1) saturate(1.2);
+}
+
+/* === LIGHTBOX OVERLAY (for all gallery pages) === */
+.lightbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  /* Raise above the navigation/button bar (which uses z-index up to 3000) */
+  z-index: 100500;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.lightbox.active { opacity: 1; pointer-events: all; }
+/* Fix: keep blur behind the image */
+.lightbox::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(50, 0, 80, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 0; /* ✅ pushes blur behind the image */
+}
+
+.lightbox img {
+  position: relative;
+  z-index: 2;
+  opacity: 0;                /* Start invisible */
+  transform: scale(0.98);    /* Slightly smaller for a subtle pop-in */
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* When lightbox becomes active, image fades in smoothly */
+.lightbox.active img {
+  opacity: 1;
+  transform: scale(1);
+}
+/* Swiper */
+/* === Lightbox Swiper Container (Fixed Centering) === */
+.swiper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;              /* ✅ no right gap */
+  box-sizing: border-box;
+}
+
+.swiper-wrapper {
+  display: flex;
+  justify-content: center;       /* ✅ keep slides centered in all widths */
+  align-items: center;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  max-width: 90vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  margin: 0 auto;                /* ✅ force perfect horizontal centering */
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Guarantee perfect horizontal centering */
+.swiper-slide img {
+  display: block;
+  margin: 0 auto;       /* ✅ center image regardless of viewport size */
+}
+
+@media
+  .swiper {
+    padding: 0 3vw;
+  { (max-width: 900px)}
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.swiper-slide img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+.close-btn {
+ position: fixed;  /* change from fixed → absolute */
+  right: 2vw;          /* make it responsive */
+  right: 24px;
+  font-size: 44px;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 3000;
+}
+
+/* Fix: ensure slides are centered horizontally, ignoring close button */
+.lightbox.active .swiper {
+  justify-content: center;
+}
+
+.lightbox.active .swiper-wrapper {
+  justify-content: center;
+  align-items: center;
+}
+
+/* === Lightbox Centering Correction === */
+.swiper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0; /* remove right bias */
+  margin: 0 auto; /* ensure entire swiper is centered */
+}
+
+.swiper-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: none !important; /* neutralize Swiper offset */
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  margin: 0 auto;
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  object-fit: contain;
+}
+
+/* keep images proportional on narrow screens */
+@media
+  .swiper-slide img {
+    max-width: 92vw;
+  { (max-width: 700px)}
+}
+
+/* Ensure lightbox stays perfectly centered even with the close button */
+.lightbox.active .swiper {
+  justify-content: center;
+}
+.lightbox.active .swiper-wrapper {
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+/* === GALLERY SECTION: Tighter, Even Padding === */
+.gallery-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 60px var(--page-side-space);
+  padding: var(--gallery-padding);
+  width: calc(100% - (var(--page-side-space) * 2));
+  max-width: calc(1200px - (var(--page-side-space) * 2));
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border-radius: 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  backdrop-filter: blur(10px) saturate(180%);
+  max-width: 90%;
+}
+
+/* Inner grid spacing */
+
+
+/* Ensure gallery page thumbs are a reasonable, consistent size (3 columns but with a min width)
+   so they appear larger inside the same container used on the index page. */
+.index-featured-gallery > 
+
+/* Desktop tweaks: ensure columns don't grow too large on very wide screens */
+@media
+  /* On very wide screens, give gallery columns a sensible min width so
+     thumbnails don't grow excessively large. */
+  .index-featured-gallery > 
+{ (min-width: 1400px)}
+
+@media
+  .index-featured-gallery > 
+{ (max-width: 999px)}
+
+@media
+  .index-featured-gallery > 
+{ (max-width: 600px)}
+
+/* Responsive tweak for mobile */
+@media
+  .gallery-section {
+    padding: 10px;
+    border-radius: 24px;
+  { (max-width: 700px)}
+  
+}
+
+/* Ensure gallery-wrap (full gallery page) uses only the outer wrapper's padding
+   so thumbnails have equal spacing inside the PNG-backed container. This
+   overrides the generic mobile ``. */
+.index-featured-gallery.gallery-wrap > 
+
+/* Gallery-only: ensure inner grid doesn't add extra left/right margins inside the wrapper */
+.subpage .index-featured-gallery.gallery-wrap > 
+
+/* DEBUG: temporary outlines to diagnose gallery padding issues
+   Remove or comment out after verification. */
+/* (gallery debug / overrides removed) */
+
+/* === SHOP PAGE === */
+.shop-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 30px;
+  width: min(92vw, 1000px);
+  margin-top: 40px;
+  text-align: center;
+}
+.shop-frame .info-text {
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 15px;
+  padding: 14px 18px;
+  margin: 10px 0 15px;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+.shop-frame iframe {
+  width: 100%;
+  height: 700px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* === ABOUT PAGE === */
+.about-layered-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* match gallery container sizing and side spacing */
+  width: calc(100% - (var(--page-side-space) * 2));
+  max-width: calc(1200px - (var(--page-side-space) * 2));
+  margin: 60px var(--page-side-space);
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border-radius: 40px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  padding: calc(var(--gallery-padding) * 1.1);
+}
+.about-layered-base {
+  /* Inner base becomes a simple inner wrapper; clear background/padding so section background matches galleries */
+  background: transparent;
+  background-image: none;
+  padding: 0;
+  width: 100%;
+}
+.about-layered-accent {
+  background: linear-gradient(180deg, rgba(93, 8, 154, 0.65), rgba(110,130,200,0.75));
+  border-radius: 30px;
+  padding: 22px 28px;
+}
+.about-layered-text {
+  color: #fff;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* === CONTACT PAGE GRID === */
+.glass-frame.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  padding: 25px;
+  width: 100%;
+  max-width: 800px;
+  margin: 60px auto;
+  border-radius: 40px;
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+}
+.glass-frame.contact-grid .thumb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+.glass-frame.contact-grid .thumb:hover {
+  transform: scale(1.05);
+  filter: brightness(1.15);
+}
+@media
+  .glass-frame.contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    padding: 18px;
+  { (max-width: 768px)}
+}
+
+/* === FOOTER === */
+.footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 22px 16px 30px;
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(14px) saturate(160%);
+  border-top: 1px solid rgba(255,255,255,0.22);
+  box-shadow: 0 0 40px rgba(150,100,255,0.35) inset,
+              0 -8px 28px rgba(150,100,255,0.25);
+  gap: 12px;
+  margin-top: 24px;
+}
+.socials { display: flex; gap: 18px; }
+.socials a {
+  font-size: 1.6rem;
+  color: var(--text);
+  transition: transform .2s ease, color .2s ease;
+}
+.socials a:hover { transform: translateY(-2px); color: #c9a9ff; }
+.copyright {
+  font-family: Georgia, serif;
+  font-size: .9rem;
+  opacity: .9;
+  margin-top: 6px;
+}
+
+/* === LIGHTBOX NAVIGATION ARROWS === */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #fff;
+  opacity: 0.8;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 3000; /* keep above blur and image */
+}
+
+/* Hide arrows for single-image lightbox (merch thumbnails) */
+.lightbox.single-image .swiper-button-next,
+.lightbox.single-image .swiper-button-prev {
+  display: none;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Icon size */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 40px;
+}
+
+/* Optional fade-in on hover over lightbox area */
+.lightbox:hover .swiper-button-next,
+.lightbox:hover .swiper-button-prev {
+  opacity: 1;
+}
+
+/* Hide arrows on mobile if desired */
+@media
+  .swiper-button-next,
+  .swiper-button-prev {
+    opacity: 0.6;
+    font-size: 30px;
+  { (max-width: 600px)}
+}
+
+/* === MINI GALLERY SECTION (2×2 Random Grid) === */
+.gallery-grid-mini {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  padding: 18px;
+  margin: 40px auto;
+  max-width: 90%;
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border-radius: 32px;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px) saturate(180%);
+}
+
+.gallery-grid-mini .thumb {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.gallery-grid-mini .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.gallery-grid-mini .thumb img:hover {
+  transform: scale(1.04);
+}
+
+/* Responsive: keep 2×2 grid but scale to fit on mobile */
+@media
+  .gallery-grid-mini {
+    max-width: 95%;
+    gap: 12px;
+    padding: 14px;
+  { (max-width: 700px)}
+}
+
+/* === ROBBIE + PARKER GALLERY (lightbox-thumbs) FIXED HEIGHT === */
+.lightbox-thumbs {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  width: 100%;
+  max-width: 90%;
+  margin: 40px auto;
+  padding: 18px;
+  /* ✅ allow container to size itself correctly */
+  height: auto;
+  min-height: fit-content;
+  overflow: visible; /* let content define height */
+  background: rgba(194, 200, 235, 0.34);
+  background-image: url('graphics/container1bkgnd.png');
+  background-size: cover;
+  background-blend-mode: overlay;
+  border-radius: 32px;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              inset 0 0 25px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px) saturate(180%);
+}
+
+/* ✅ make sure each thumb keeps its full height */
+.lightbox-thumbs .thumb {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.lightbox-thumbs .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.lightbox-thumbs .thumb img:hover {
+  transform: scale(1.04);
+}
+
+/* 📱 MOBILE FIX */
+@media
+  .lightbox-thumbs {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 14px;
+    max-width: 95%;
+    height: auto !important;
+    min-height: fit-content;
+  { (max-width: 700px)}
+
+  .lightbox-thumbs .thumb {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* About section mobile reduction */
+@media
+  .about-layered-section {
+    margin: 36px auto;
+  { (max-width: 700px)}
+  .about-layered-base {
+    padding: calc(var(--gallery-padding) * 0.9);
+    min-height: 220px;
+  }
+  .about-layered-accent {
+    padding: 18px;
+  }
+}
+
+/* === UNIVERSAL LIGHTBOX STYLES === */
+.custom-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(12px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
+  transition: opacity 0.3s ease;
+}
+.custom-lightbox.active {
+  display: flex;
+}
+
+.custom-lightbox img {
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: 20px;
+  object-fit: contain;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+.close-btn {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  font-size: 40px;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10000;
+  transition: transform 0.2s ease;
+}
+.close-btn:hover { transform: scale(1.1); }
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 60px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+.nav-btn:hover { opacity: 1; }
+.nav-btn.prev { left: 25px; }
+.nav-btn.next { right: 25px; }
+
+/* ------------------------------------------------------------------
+   Mobile: unify side spacing and fix small-screen asymmetry
+   This block enforces a single source-of-truth for page-side spacing
+   on small screens so galleries, merch, and about sections align.
+   ------------------------------------------------------------------ */
+@media
+  .index-featured-gallery,
+  .merch-featured,
+  .about-layered-section,
+  .glass-frame,
+  .gallery-grid-full,
+  .gallery-grid-mini {
+    width: calc(100% - (var(--page-side-space) * 2));
+    max-width: calc(100% - (var(--page-side-space) * 2));
+    margin-left: var(--page-side-space);
+    margin-right: var(--page-side-space);
+    box-sizing: border-box;
+    /* keep inner padding so thumbs don't touch container edges */
+    padding-left: var(--gallery-padding);
+    padding-right: var(--gallery-padding);
+  { (max-width: 700px)}
+
+  /* Keep merch layout proportions: top landscape with two matching portrait bottoms */
+  .merch-featured {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    grid-auto-rows: auto; /* allow rows to size naturally */
+  }
+  .merch-featured .thumb.bottom { width: 100%; }
+
+  /* Slight cap on top merch image height so it doesn't dominate very small viewports */
+  .merch-featured .thumb.top img {
+    max-height: 36vh;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Ensure featured 2x2 thumbnails keep square cells on small screens */
+  .index-featured-gallery.featured-2x2 .thumb { aspect-ratio: 1 / 1; }
+}
+
+/* === Gallery precise gutters (mobile) — enforce equal left/right spacing === */
+@media
+  #gallery-section .gallery-grid {
+    /* Two equal columns */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    /* One uniform gap between tiles */
+    gap: var(--gallery-gap) !important;
+    /* Make the outer left/right gutters equal to the internal gap */
+    padding-left: var(--gallery-gap) !important;
+    padding-right: var(--gallery-gap) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  { (max-width: 900px)}
+  #gallery-section .gallery-grid .thumb {
+    margin: 0 !important;
+  }
+  #gallery-section .gallery-grid .thumb img {
+    display: block;
+  }
+}
+
+
+
+/* ===== GALLERY FINAL RULESET (scoped) =====
+   - One source of truth for gallery spacing
+   - Even left/right gutters on mobile
+   - No double-inset: page-section provides main padding; grid controls gap
+*/
+#gallery-section.page-section { /* keep your frosted card padding via --gallery-padding */ }
+
+#gallery-section .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gallery-gap);
+  padding: 0;            /* grid itself has no extra padding; card controls inset */
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  /* Mobile: enforce equal gutters */
+  #gallery-section .gallery-grid {
+    grid-template-columns: repeat(2, calc((100% - var(--gallery-gap)) / 2));
+    column-gap: var(--gallery-gap);
+    row-gap: var(--gallery-gap);
+    /* optional: half-gap edges if you prefer that look, but we rely on card padding instead */
+  }
+}
+
+#gallery-section .gallery-grid .thumb {
+  margin: 0;
+  border-radius: 24px;
+  overflow: hidden;
+}
+#gallery-section .gallery-grid .thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+}
+

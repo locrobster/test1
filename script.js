@@ -264,8 +264,14 @@ if (window.lucide && typeof window.lucide.createIcons === "function") {
       cell.className = 'thumb';
       const a = document.createElement('a');
       a.href = srcFull;
-      a.setAttribute('data-pswp-width','1600');
-      a.setAttribute('data-pswp-height','1067');
+      
+      // Load the full-size image to get actual dimensions
+      const fullImg = new Image();
+      fullImg.onload = () => {
+        a.setAttribute('data-pswp-width', fullImg.naturalWidth);
+        a.setAttribute('data-pswp-height', fullImg.naturalHeight);
+      };
+      fullImg.src = srcFull;
 
       const img = new Image();
       img.loading = 'lazy';
@@ -296,4 +302,63 @@ if (window.lucide && typeof window.lucide.createIcons === "function") {
   }
 
   for(let i=start; i<=end; i++) addItem(i);
+})();
+
+// === Shop Gallery Builder: Robbie + Parker Photos ===
+(function buildShopGallery(){
+  const grid = document.querySelector('.gallery-grid-shop');
+  if(!grid) return;
+
+  // Define the shop items with their folders and counts
+  const shopItems = [
+    { folder: 'robbie', count: 8 },
+    { folder: 'parker', count: 5 }
+  ];
+
+  function addShopItem(folder, i){
+    const thumbPath = `images/thumbnails/${folder}/${folder === 'robbie' ? 'RobbieSmall' : 'ParkerSmall'}${i}_thumb.jpg`;
+    const fullPath = `images/fullsize/${folder}/${folder === 'robbie' ? 'RobbieSmall' : 'ParkerSmall'}${i}_web.jpg`;
+
+    function createShopCell(srcThumb, srcFull){
+      const cell = document.createElement('div');
+      cell.className = 'thumb';
+      const a = document.createElement('a');
+      a.href = srcFull;
+      
+      // Load the full-size image to get actual dimensions
+      const fullImg = new Image();
+      fullImg.onload = () => {
+        a.setAttribute('data-pswp-width', fullImg.naturalWidth);
+        a.setAttribute('data-pswp-height', fullImg.naturalHeight);
+      };
+      fullImg.src = srcFull;
+
+      const img = new Image();
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.alt = `${folder} ${i}`;
+      img.src = srcThumb;
+
+      a.appendChild(img);
+      cell.appendChild(a);
+      grid.appendChild(cell);
+    }
+
+    // Try to load the thumbnail
+    const test = new Image();
+    test.onload = () => {
+      createShopCell(test.src, fullPath);
+    };
+    test.onerror = () => {
+      // Skip if image doesn't exist
+    };
+    test.src = thumbPath;
+  }
+
+  // Add all Robbie and Parker images
+  shopItems.forEach(({ folder, count }) => {
+    for(let i = 1; i <= count; i++) {
+      addShopItem(folder, i);
+    }
+  });
 })();

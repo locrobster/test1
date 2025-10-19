@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact — LocRobster Studios</title>
-  <link rel="icon" type="image/png" href="graphics/favicon.png" />
+  <title>LocRobster Studios — Contact</title>
+  <!-- <link rel="icon" type="image/png" href="graphics/favicon.png" /> -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="style.css?v=20251013-01" />
+  <link rel="stylesheet" href="style.css?v=20251019-01" />
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body class="subpage">
- <div class="banner cropped">
-  <img src="graphics/mainbanner.png" alt="Main Banner">
-  <img src="graphics/bannerlogo.png" alt="LocRobster Studios Logo">
-</div>
+  <!-- Banner -->
+  <div class="banner cropped">
+    <img src="graphics/mainbanner.png" alt="Main Banner">
+    <img src="graphics/bannerlogo.png" alt="LocRobster Studios Logo">
+  </div>
 
+  <!-- Navigation Buttons -->
   <div class="button-container">
     <a href="index.html" class="frosted-btn"><i data-lucide="home"></i> Home</a>
     <a href="shop.html" class="frosted-btn"><i data-lucide="shopping-bag"></i> Shop</a>
@@ -24,31 +26,55 @@
     <a href="contact.html" class="frosted-btn active" aria-current="page"><i data-lucide="mail"></i> Mail</a>
   </div>
 
-  <div class="glass-frame contact-grid">
-
-    <h2 style="grid-column: 1 / -1; text-align:center; margin-bottom:10px;">Connect with me on social media below!</h2>
-
-    <a href="https://www.tiktok.com/@locrobster" target="_blank" class="thumb" style="background:rgba(0,0,0,0.5);">
-      <i class="fab fa-tiktok" style="font-size:3rem;color:#fff;"></i>
-    </a>
-    <a href="https://www.instagram.com/locrobster_studios" target="_blank" class="thumb" style="background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af,#515bd4);">
-      <i class="fab fa-instagram" style="font-size:3rem;color:#fff;"></i>
-    </a>
-    <a href="https://www.youtube.com/@LocRobster" target="_blank" class="thumb" style="background:rgba(255,0,0,0.6);">
-      <i class="fab fa-youtube" style="font-size:3rem;color:#fff;"></i>
-    </a>
-    <a href="https://x.com/locrobster" target="_blank" class="thumb" style="background:rgba(0,0,0,0.75);">
-      <i class="fab fa-x-twitter" style="font-size:3rem;color:#fff;"></i>
-    </a>
-    <a href="https://www.twitch.tv/locrobster" target="_blank" class="thumb" style="background:rgba(145,70,255,0.6);">
-      <i class="fab fa-twitch" style="font-size:3rem;color:#fff;"></i>
-    </a>
-    <div class="thumb" style="background:rgba(59,89,152,0.6); display:flex;flex-direction:column;align-items:center;justify-content:center;">
-      <i class="fab fa-facebook-f" style="font-size:3rem;color:#fff;"></i>
-      <span style="margin-top:10px;font-size:1rem;color:#fff;opacity:0.85;">Coming Soon</span>
+  <!-- Contact Content -->
+  <section class="about-layered-section">
+    <div class="about-layered-base">
+      <div class="about-layered-accent">
+        <div class="about-layered-text">
+          <h2>Get in Touch</h2>
+          <p>Have questions, ideas, or want to collaborate? I'd love to hear from you!</p>
+          
+          <div class="contact-links" style="margin: 30px 0; display: flex; flex-direction: column; gap: 15px; align-items: center;">
+            <a href="mailto:hello@locrobster.com" class="frosted-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px;">
+              <i data-lucide="mail"></i> hello@locrobster.com
+            </a>
+          </div>
+          
+          <p><strong>Connect on Social Media:</strong></p>
+          <p>Follow me on the platforms below to stay updated with new art, behind-the-scenes content, and more!</p>
+          
+          <div class="social-thumbnails-grid">
+            <a href="https://www.tiktok.com/@locrobster" target="_blank" class="social-thumb">
+              <i class="fab fa-tiktok"></i>
+              <span>TikTok</span>
+            </a>
+            <a href="https://www.instagram.com/locrobster_studios" target="_blank" class="social-thumb">
+              <i class="fab fa-instagram"></i>
+              <span>Instagram</span>
+            </a>
+            <a href="https://www.youtube.com/@LocRobster" target="_blank" class="social-thumb">
+              <i class="fab fa-youtube"></i>
+              <span>YouTube</span>
+            </a>
+            <a href="https://x.com/locrobster" target="_blank" class="social-thumb">
+              <i class="fab fa-x-twitter"></i>
+              <span>X</span>
+            </a>
+            <a href="https://www.twitch.tv/locrobster" target="_blank" class="social-thumb">
+              <i class="fab fa-twitch"></i>
+              <span>Twitch</span>
+            </a>
+            <a href="https://www.facebook.com/locrobster" target="_blank" class="social-thumb">
+              <i class="fab fa-facebook"></i>
+              <span>Facebook</span>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
+  <!-- Footer -->
   <footer class="footer">
     <div class="socials">
       <a href="https://www.tiktok.com/@locrobster" target="_blank"><i class="fab fa-tiktok"></i></a>
