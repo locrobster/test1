@@ -243,182 +243,57 @@ if (window.lucide && typeof window.lucide.createIcons === "function") {
   window.lucide.createIcons();
 }
 
-// === Auto Gallery Builder: ART folder ===
-const galleryContainer = document.querySelector(".gallery-grid-full");
 
-if (galleryContainer) {
-  const folder = "art";
-  const maxImages = 50; // supports up to 50 artworks
-  function loadArtGallery() {
-    const checks = [];
 
-    // Helper: try HEAD first (fast), then fallback to Image() on error/CORS
-    function checkThumbExists(url) {
-      return fetch(url, { method: 'HEAD' })
-        .then(res => !!res && res.ok)
-        .catch(() => {
-          return new Promise(resolve => {
-            const img = new Image();
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
-            img.src = url;
-          });
-        });
-    }
+// === Auto Gallery Builder: ART 1..15 (robust JPG/WebP) ===
+(function buildArtGalleryStrict(){
+  const grid = document.querySelector('#gallery-grid') || document.querySelector('.gallery-grid-full');
+  if(!grid) return;
+  const folder = 'art';
+  const start = 1, end = 15;
 
-    function appendThumb(i) {
-      const thumbPath = `images/thumbnails/${folder}/${folder}${i}.jpg`;
-      const fullPath = `images/fullsize/${folder}/${folder}${i}.jpg`;
-      const thumbDiv = document.createElement("div");
-      thumbDiv.classList.add("thumb");
+  function addItem(i){
+    const thumbJpg = `images/thumbnails/${folder}/${folder}${i}.jpg`;
+    const thumbWebp = `images/thumbnails/${folder}/${folder}${i}.webp`;
+    const fullJpg  = `images/fullsize/${folder}/${folder}${i}.jpg`;
+    const fullWeb  = `images/fullsize/${folder}/${folder}${i}_web.jpg`;
+    const fullWebp = `images/fullsize/${folder}/${folder}${i}.webp`;
 
-      const img = document.createElement("img");
-      img.src = thumbPath;
+    function createCell(srcThumb, srcFull){
+      const cell = document.createElement('div');
+      cell.className = 'thumb';
+      const a = document.createElement('a');
+      a.href = srcFull;
+      a.setAttribute('data-pswp-width','1600');
+      a.setAttribute('data-pswp-height','1067');
+
+      const img = new Image();
+      img.loading = 'lazy';
+      img.decoding = 'async';
       img.alt = `${folder} ${i}`;
+      img.src = srcThumb;
 
-      thumbDiv.appendChild(img);
-      galleryContainer.appendChild(thumbDiv);
-      thumbDiv.addEventListener("click", () => openLightbox([fullPath]));
+      a.appendChild(img);
+      cell.appendChild(a);
+      grid.appendChild(cell);
     }
 
-    // Build an array of checks (HEAD with Image fallback)
-    for (let i = 1; i <= maxImages; i++) {
-      const thumbPath = `images/thumbnails/${folder}/${folder}${i}.jpg`;
-      const p = checkThumbExists(thumbPath).then(ok => {
-        if (ok) {
-          appendThumb(i);
-          return true;
-        }
-        return false;
-      });
-      checks.push(p);
-    }
-
-    // After all checks complete, ensure we have an even number of thumbs
-    Promise.all(checks).then(results => {
-      const foundCount = results.filter(Boolean).length;
-      if (foundCount % 2 === 1) {
-        // Append a "Coming Soon" placeholder as the last square so rows are even.
-        const placeholder = document.createElement('div');
-        placeholder.className = 'thumb coming-soon';
-        placeholder.setAttribute('title', 'Coming Soon');
-
-        // Use an inline SVG data-uri so no extra asset is required
-        const svg = encodeURIComponent(`
-          <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'>
-            <rect width='100%' height='100%' fill='#efeef8' />
-            <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Inter, Arial, sans-serif' font-size='28' fill='#4b1f9e'>Coming Soon</text>
-          </svg>
-        `);
-        const dataUri = `data:image/svg+xml;charset=UTF-8,${svg}`;
-
-  // Do not append an <img> — keep the placeholder empty so the CSS frosted styling
-  // (and ::after label) renders consistently across browsers.
-        // Make it non-clickable (no lightbox)
-        placeholder.classList.add('no-lightbox');
-        galleryContainer.appendChild(placeholder);
-      }
-    });
+    // Try to load thumb JPG, else WebP
+    const test = new Image();
+    test.onload = () => {
+      // Pick best full path that likely exists
+      createCell(test.src, fullJpg);
+    };
+    test.onerror = () => {
+      const test2 = new Image();
+      test2.onload = () => createCell(test2.src, fullJpg);
+      test2.onerror = () => {
+        // If we can't find a thumb, skip silently
+      };
+      test2.src = thumbWebp;
+    };
+    test.src = thumbJpg;
   }
 
-  window.addEventListener("DOMContentLoaded", loadArtGallery);
-}
-// --- Restore normal link behavior for Contact page ---
-document.querySelectorAll('.contact-grid a.thumb').forEach(link => {
-  link.addEventListener('click', e => e.stopPropagation());
-});
-
-// === RANDOM 2×2 GALLERY ON INDEX PAGE (remember for 24 hours) ===
-document.addEventListener("DOMContentLoaded", () => {
-  const miniGrid = document.querySelector(".gallery-grid-mini");
-  if (!miniGrid) return; // only run on index page
-
-  const totalImages = 15; // adjust if you add more art files
-  const now = Date.now();
-  const oneDay = 24 * 60 * 60 * 1000;
-
-  // Try to load stored data
-  let storedData = localStorage.getItem("randomArts");
-  let storedTime = localStorage.getItem("randomArtsTime");
-  let selected = storedData ? JSON.parse(storedData) : [];
-
-  // Reset if older than 24h or missing
-  if (!storedTime || now - parseInt(storedTime, 10) > oneDay || !selected.length) {
-    const indices = [];
-    while (indices.length < 4) {
-      const r = Math.floor(Math.random() * totalImages) + 1;
-      if (!indices.includes(r)) indices.push(r);
-    }
-    selected = indices;
-    localStorage.setItem("randomArts", JSON.stringify(indices));
-    localStorage.setItem("randomArtsTime", now.toString());
-  }
-
-  // Build thumbnails dynamically
-  selected.forEach(i => {
-    const thumbPath = `images/thumbnails/art/art${i}.jpg`;
-    const fullPath = `images/fullsize/art/art${i}.jpg`;
-
-    const thumbDiv = document.createElement("div");
-    thumbDiv.classList.add("thumb");
-
-    const img = document.createElement("img");
-    img.src = thumbPath;
-    img.alt = `art${i}`;
-    thumbDiv.appendChild(img);
-    miniGrid.appendChild(thumbDiv);
-
-    thumbDiv.addEventListener("click", () => openLightbox([fullPath]));
-  });
-});
-
-// ---------------------------
-// Auto-resize Printify iframe (shop page)
-// ---------------------------
-function resizePrintifyIframe() {
-  const iframe = document.getElementById('printify-shop');
-  if (!iframe) return;
-
-  // Calculate available height: viewport minus banner height minus button-container height minus some padding
-  const vh = window.innerHeight;
-  const banner = document.querySelector('.banner');
-  const buttons = document.querySelector('.button-container');
-  const footer = document.querySelector('.footer');
-
-  const bannerH = banner ? banner.getBoundingClientRect().height : 0;
-  const buttonsH = buttons ? buttons.getBoundingClientRect().height : 0;
-  const footerH = footer ? footer.getBoundingClientRect().height : 0;
-
-  // Reserve 20px extra spacing
-  const reserved = bannerH + buttonsH + 20;
-
-  const newHeight = Math.max(480, vh - reserved - 40); // ensure minimum
-  iframe.style.height = newHeight + 'px';
-}
-
-window.addEventListener('load', resizePrintifyIframe);
-window.addEventListener('resize', resizePrintifyIframe);
-window.addEventListener('orientationchange', () => setTimeout(resizePrintifyIframe, 250));
-
-// Accessibility: keep the active nav item as an anchor for semantics but
-// prevent it from navigating while it's the current page. This preserves
-// focusability while ensuring clicking or pressing Enter doesn't reload the page.
-(function disableCurrentPageLinks(){
-  function block(e){
-    // only block anchors that explicitly declare aria-current="page"
-    const el = e.currentTarget;
-    if (el && el.getAttribute && el.getAttribute('aria-current') === 'page') {
-      e.preventDefault();
-      // avoid double-activation for keyboard users
-      e.stopPropagation();
-    }
-  }
-
-  document.querySelectorAll('.button-container a[aria-current="page"]').forEach(a => {
-    a.addEventListener('click', block);
-    a.addEventListener('keydown', (e) => {
-      // Block Enter/Space activating the link
-      if (e.key === 'Enter' || e.key === ' ') block(e);
-    });
-  });
+  for(let i=start; i<=end; i++) addItem(i);
 })();

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="style.css?v=20251013-01" />
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/photoswipe@5/dist/photoswipe.css" />
 </head>
 
 <body class="subpage">
@@ -31,16 +31,7 @@
   <section class="index-featured-gallery gallery-wrap">
     <div class="gallery-grid-full"></div>
   </section>
-
-  <!-- Lightbox Overlay -->
-  <div class="lightbox" id="lightbox">
-    <button class="close-btn" aria-label="Close">&times;</button>
-    <div class="swiper">
-      <div class="swiper-wrapper"></div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-    </div>
-  </div>
+</div>
 
   <!-- Footer -->
   <footer class="footer">
@@ -91,5 +82,14 @@
   </script>
   
 
+  <script type="module">
+  import PhotoSwipeLightbox from 'https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.esm.js';
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '.gallery-grid-full, .gallery-grid',
+    children: 'a',
+    pswpModule: () => import('https://unpkg.com/photoswipe@5/dist/photoswipe.esm.js')
+  });
+  lightbox.init();
+</script>
 </body>
 </html>

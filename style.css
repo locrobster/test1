@@ -1438,3 +1438,21 @@ body {
   /* Ensure featured 2x2 thumbnails keep square cells on small screens */
   .index-featured-gallery.featured-2x2 .thumb { aspect-ratio: 1 / 1; }
 }
+
+/* === GALLERY: full grid baseline === */
+.index-featured-gallery.gallery-wrap > .gallery-grid-full,
+.gallery-grid-full {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gallery-gap);
+  width: 100%;
+  padding: 0; /* outer container handles inset */
+  box-sizing: border-box;
+}
+@media (max-width: 900px) {
+  .index-featured-gallery.gallery-wrap > .gallery-grid-full,
+  .gallery-grid-full {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
