@@ -82,16 +82,16 @@ body {
   z-index: 1;
 }
 
-@media (max-width: 900px) {
+@media
   .banner,
   .banner.cropped {
     aspect-ratio: 1920 / 600;
-  }
+  { (max-width: 900px)}
 }
 
 /* Mobile: enforce the section vertical gap so large desktop margins (e.g. 60px)
    don't show on small screens. This caps spacing at --section-vertical-gap. */
-@media (max-width: 700px) {
+@media
   .index-featured-gallery,
   .merch-featured,
   .about-layered-section,
@@ -103,21 +103,21 @@ body {
   .button-container {
     margin-top: var(--section-vertical-gap) !important;
     margin-bottom: var(--section-vertical-gap) !important;
-  }
+  { (max-width: 700px)}
 
   /* Remove any extra margin set on specific containers for small screens */
   .about-layered-section { margin-left: var(--page-side-space); margin-right: var(--page-side-space); }
 }
 
 /* On mobile, show the full banner image (uncropped) while keeping the logo centered */
-@media (max-width: 900px) {
+@media
   .banner img,
   .banner.cropped img {
     width: 100%;
     height: auto;
     object-fit: contain;
     object-position: center top;
-  }
+  { (max-width: 900px)}
 
   .banner {
     align-items: flex-start; /* keep the top of the image visible */
@@ -178,17 +178,17 @@ body {
   margin-bottom: 28px;
 }
 
-@media (max-width: 900px) {
+@media
   .banner + .button-container {
     /* maintain 15px gap on tablet */
     margin-top: 15px;
     margin-bottom: 18px;
     padding: 12px 18px;
     gap: 12px;
-  }
+  { (max-width: 900px)}
 }
 
-@media (max-width: 480px) {
+@media
   /* Mobile: make the bar full-bleed and remove rounded corners */
   .banner + .button-container,
   .banner ~ .button-container,
@@ -208,7 +208,7 @@ body {
     padding-right: env(safe-area-inset-right, 0px);
     gap: 8px;
     border-radius: 0;
-  }
+  { (max-width: 480px)}
 
   /* Ensure the button container stretches edge-to-edge on every page
      (not only when it's a sibling/child of .banner). This overrides the
@@ -258,8 +258,8 @@ body {
               0 0 10px rgba(50, 40, 90, 0.5);
 }
 
-@media (max-width: 700px) {
-  .frosted-btn.active { display: inline-flex; }
+@media
+  .frosted-btn.active { display: inline-flex; { (max-width: 700px)}
   .button-container {
     gap: 8px;
     padding: 6px 8px;
@@ -276,29 +276,29 @@ body {
   }
 }
 
-@media (max-width: 480px) {
+@media
   /* Even tighter at the smallest widths to avoid any button clipping */
-  .button-container { gap: 6px; }
+  .button-container { gap: 6px; { (max-width: 480px)}
   .button-container .frosted-btn { padding: 6px 8px; font-size: 0.82rem; }
 }
 
 /* Responsive gallery spacing: tablet and phone */
-@media (max-width: 1024px) {
+@media
   :root {
     --gallery-padding: 22px; /* tablet */
     --gallery-gap: 16px;
-  }
+  { (max-width: 1024px)}
 }
 
-@media (max-width: 700px) {
+@media
   :root {
     --gallery-padding: 12px; /* phone */
     --gallery-gap: 10px;
-  }
+  { (max-width: 700px)}
 }
 
 /* Ensure container calc values don't underflow on very small screens */
-@media (max-width: 480px) {
+@media
   .index-featured-gallery,
   .glass-frame,
   .gallery-grid-full,
@@ -308,7 +308,7 @@ body {
     max-width: calc(100% - (var(--page-side-space) * 2));
     margin-left: var(--page-side-space);
     margin-right: var(--page-side-space);
-  }
+  { (max-width: 480px)}
 }
 
 /* === INDEX PAGE FEATURED 3×1 GALLERY === */
@@ -336,10 +336,10 @@ body {
   grid-auto-rows: 1fr;
 }
 
-@media (max-width: 900px) {
+@media
   .index-featured-gallery.featured-2x2 {
     grid-template-columns: repeat(2, 1fr);
-  }
+  { (max-width: 900px)}
 }
 
 .index-featured-gallery .thumb {
@@ -400,13 +400,13 @@ body {
 }
 
 /* Responsive tweaks */
-@media (max-width: 700px) {
+@media
   .glass-frame.lightbox-thumbs {
     grid-template-columns: 1fr 1fr;
     padding: 10px;
     gap: 8px;
     border-radius: 24px;
-  }
+  { (max-width: 700px)}
 }
 
 /* === INDEX PAGE: Tightened Frosted Container Styling === */
@@ -488,13 +488,13 @@ body {
 }
 
 /* Mobile tweaks */
-@media (max-width: 700px) {
+@media
   .index-featured-gallery,
   .glass-frame.lightbox-thumbs {
     padding: 10px;
     gap: 8px;
     border-radius: 24px;
-  }
+  { (max-width: 700px)}
 }
 
 /* === MERCH FEATURED: Top (1) + Bottom (2) layout === */
@@ -546,12 +546,12 @@ body {
 }
 
 /* Ensure equal padding to container edges on smaller screens */
-@media (max-width: 700px) {
+@media
   /* Keep merch layout as: top (landscape) spanning both columns, bottom two portraits side-by-side */
   .merch-featured {
     grid-template-columns: 1fr 1fr; /* two equal columns even on mobile */
     gap: 10px;
-  }
+  { (max-width: 700px)}
   .merch-featured .thumb.top {
     grid-column: 1 / -1; /* span both columns */
     aspect-ratio: 16 / 9; /* maintain landscape feel on small screens */
@@ -562,7 +562,7 @@ body {
 }
 
 /* Mobile: add slight horizontal padding so content doesn't touch the device edge */
-@media (max-width: 700px) {
+@media
   /* Ensure major containers respect the body padding and don't overflow */
   .index-featured-gallery,
   .glass-frame,
@@ -575,7 +575,7 @@ body {
     /* keep internal padding so thumbnails have breathing room on small screens */
     padding-left: var(--gallery-padding);
     padding-right: var(--gallery-padding);
-  }
+  { (max-width: 700px)}
 }
 
 /* Apply the same responsive internal padding and gap to all gallery-like containers
@@ -619,8 +619,8 @@ body {
   margin-top: 6px;
 }
 
-@media (max-width: 480px) {
-  .glass-frame iframe { border-radius: 8px; }
+@media
+  .glass-frame iframe { border-radius: 8px; { (max-width: 480px)}
 }
 
 /* When used specifically as a page-level wrapper for a full grid, don't make the
@@ -639,26 +639,18 @@ body {
 
 /* For the full gallery page (gallery-wrap) ensure columns don't shrink too small
    so thumbnails match the visual scale on the index page */
-.index-featured-gallery.gallery-wrap > .gallery-grid-full {
-  grid-template-columns: repeat(3, minmax(200px, 1fr));
-  width: 100%;
-  padding: 0; /* outer container provides padding and background */
-}
+.index-featured-gallery.gallery-wrap > 
 
-@media (max-width: 999px) {
-  .index-featured-gallery.gallery-wrap > .gallery-grid-full {
-    grid-template-columns: repeat(2, minmax(160px, 1fr));
-  }
-}
+@media
+  .index-featured-gallery.gallery-wrap > 
+{ (max-width: 999px)}
 
-@media (max-width: 600px) {
-  .index-featured-gallery.gallery-wrap > .gallery-grid-full {
-    grid-template-columns: repeat(2, minmax(120px, 1fr));
-  }
-}
+@media
+  .index-featured-gallery.gallery-wrap > 
+{ (max-width: 600px)}
 
 /* Mobile fix: enforce equal 2-column grid and full-width cells to prevent uneven spacing */
-@media (max-width: 700px) {
+@media
   /* Make gallery-wrap match the index container sizing/padding so visuals align */
   .index-featured-gallery.gallery-wrap {
     /* Slightly reduced vertical margins on small screens and keep consistent inner padding */
@@ -668,16 +660,8 @@ body {
     margin: 40px var(--page-side-space);
     padding: var(--gallery-padding);
     box-sizing: border-box;
-  }
-  .index-featured-gallery.gallery-wrap > .gallery-grid-full {
-    grid-template-columns: repeat(2, 1fr) !important; /* two equal columns */
-    gap: var(--gallery-gap);
-    width: 100%;
-    margin: 0;
-    padding: 0; /* outer container provides padding */
-    align-items: start;
-    justify-items: stretch;
-  }
+  { (max-width: 700px)}
+  .index-featured-gallery.gallery-wrap > 
   /* ensure each thumbnail fills its grid cell and remains square */
   .index-featured-gallery.gallery-wrap .thumb {
     width: 100%;
@@ -865,10 +849,10 @@ body {
   margin: 0 auto;       /* ✅ center image regardless of viewport size */
 }
 
-@media (max-width: 900px) {
+@media
   .swiper {
     padding: 0 3vw;
-  }
+  { (max-width: 900px)}
 }
 
 .swiper-slide {
@@ -938,10 +922,10 @@ body {
 }
 
 /* keep images proportional on narrow screens */
-@media (max-width: 700px) {
+@media
   .swiper-slide img {
     max-width: 92vw;
-  }
+  { (max-width: 700px)}
 }
 
 /* Ensure lightbox stays perfectly centered even with the close button */
@@ -977,70 +961,43 @@ body {
 }
 
 /* Inner grid spacing */
-.gallery-grid-full {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--gallery-gap);    /* use unified gap */
-  padding: 0;                 /* outer section provides the padding now */
-  width: 100%;
-  max-width: 100%;
-}
+
 
 /* Ensure gallery page thumbs are a reasonable, consistent size (3 columns but with a min width)
    so they appear larger inside the same container used on the index page. */
-.index-featured-gallery > .gallery-grid-full {
-  /* Auto-resizing 3-column grid; thumbs are square via aspect-ratio on .thumb */
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: auto; /* height determined by content (thumb's aspect-ratio) */
-}
+.index-featured-gallery > 
 
 /* Desktop tweaks: ensure columns don't grow too large on very wide screens */
-@media (min-width: 1400px) {
+@media
   /* On very wide screens, give gallery columns a sensible min width so
      thumbnails don't grow excessively large. */
-  .index-featured-gallery > .gallery-grid-full {
-    grid-template-columns: repeat(3, minmax(180px, 1fr));
-  }
-}
+  .index-featured-gallery > 
+{ (min-width: 1400px)}
 
-@media (max-width: 999px) {
-  .index-featured-gallery > .gallery-grid-full {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
+@media
+  .index-featured-gallery > 
+{ (max-width: 999px)}
 
-@media (max-width: 600px) {
-  .index-featured-gallery > .gallery-grid-full {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
+@media
+  .index-featured-gallery > 
+{ (max-width: 600px)}
 
 /* Responsive tweak for mobile */
-@media (max-width: 700px) {
+@media
   .gallery-section {
     padding: 10px;
     border-radius: 24px;
-  }
-  .gallery-grid-full {
-    gap: 8px;
-    padding: 6px;
-  }
+  { (max-width: 700px)}
+  
 }
 
 /* Ensure gallery-wrap (full gallery page) uses only the outer wrapper's padding
    so thumbnails have equal spacing inside the PNG-backed container. This
-   overrides the generic mobile `.gallery-grid-full { padding: 6px }`. */
-.index-featured-gallery.gallery-wrap > .gallery-grid-full {
-  padding: 0 !important;
-  width: 100%;
-  box-sizing: border-box;
-}
+   overrides the generic mobile ``. */
+.index-featured-gallery.gallery-wrap > 
 
 /* Gallery-only: ensure inner grid doesn't add extra left/right margins inside the wrapper */
-.subpage .index-featured-gallery.gallery-wrap > .gallery-grid-full {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
+.subpage .index-featured-gallery.gallery-wrap > 
 
 /* DEBUG: temporary outlines to diagnose gallery padding issues
    Remove or comment out after verification. */
@@ -1141,12 +1098,12 @@ body {
   transform: scale(1.05);
   filter: brightness(1.15);
 }
-@media (max-width: 768px) {
+@media
   .glass-frame.contact-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 18px;
     padding: 18px;
-  }
+  { (max-width: 768px)}
 }
 
 /* === FOOTER === */
@@ -1213,12 +1170,12 @@ body {
 }
 
 /* Hide arrows on mobile if desired */
-@media (max-width: 600px) {
+@media
   .swiper-button-next,
   .swiper-button-prev {
     opacity: 0.6;
     font-size: 30px;
-  }
+  { (max-width: 600px)}
 }
 
 /* === MINI GALLERY SECTION (2×2 Random Grid) === */
@@ -1260,12 +1217,12 @@ body {
 }
 
 /* Responsive: keep 2×2 grid but scale to fit on mobile */
-@media (max-width: 700px) {
+@media
   .gallery-grid-mini {
     max-width: 95%;
     gap: 12px;
     padding: 14px;
-  }
+  { (max-width: 700px)}
 }
 
 /* === ROBBIE + PARKER GALLERY (lightbox-thumbs) FIXED HEIGHT === */
@@ -1314,7 +1271,7 @@ body {
 }
 
 /* 📱 MOBILE FIX */
-@media (max-width: 700px) {
+@media
   .lightbox-thumbs {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -1322,7 +1279,7 @@ body {
     max-width: 95%;
     height: auto !important;
     min-height: fit-content;
-  }
+  { (max-width: 700px)}
 
   .lightbox-thumbs .thumb {
     aspect-ratio: 1 / 1;
@@ -1330,10 +1287,10 @@ body {
 }
 
 /* About section mobile reduction */
-@media (max-width: 700px) {
+@media
   .about-layered-section {
     margin: 36px auto;
-  }
+  { (max-width: 700px)}
   .about-layered-base {
     padding: calc(var(--gallery-padding) * 0.9);
     min-height: 220px;
@@ -1402,7 +1359,7 @@ body {
    This block enforces a single source-of-truth for page-side spacing
    on small screens so galleries, merch, and about sections align.
    ------------------------------------------------------------------ */
-@media (max-width: 700px) {
+@media
   .index-featured-gallery,
   .merch-featured,
   .about-layered-section,
@@ -1417,7 +1374,7 @@ body {
     /* keep inner padding so thumbs don't touch container edges */
     padding-left: var(--gallery-padding);
     padding-right: var(--gallery-padding);
-  }
+  { (max-width: 700px)}
 
   /* Keep merch layout proportions: top landscape with two matching portrait bottoms */
   .merch-featured {
@@ -1439,20 +1396,83 @@ body {
   .index-featured-gallery.featured-2x2 .thumb { aspect-ratio: 1 / 1; }
 }
 
-/* === GALLERY: full grid baseline === */
-.index-featured-gallery.gallery-wrap > .gallery-grid-full,
-.gallery-grid-full {
-  display: grid !important;
+/* === Gallery precise gutters (mobile) — enforce equal left/right spacing === */
+@media
+  #gallery-section .gallery-grid {
+    /* Two equal columns */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    /* One uniform gap between tiles */
+    gap: var(--gallery-gap) !important;
+    /* Make the outer left/right gutters equal to the internal gap */
+    padding-left: var(--gallery-gap) !important;
+    padding-right: var(--gallery-gap) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  { (max-width: 900px)}
+  #gallery-section .gallery-grid .thumb {
+    margin: 0 !important;
+  }
+  #gallery-section .gallery-grid .thumb img {
+    display: block;
+  }
+}
+
+
+
+/* keep your frosted card padding via --gallery-padding */ }
+
+#gallery-section .gallery-grid {
+  display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--gallery-gap);
+  padding: 0;            /* grid itself has no extra padding; card controls inset */
+  margin: 0;
   width: 100%;
-  padding: 0; /* outer container handles inset */
   box-sizing: border-box;
 }
+
 @media (max-width: 900px) {
-  .index-featured-gallery.gallery-wrap > .gallery-grid-full,
-  .gallery-grid-full {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Mobile: enforce equal gutters */
+  #gallery-section .gallery-grid {
+    grid-template-columns: repeat(2, calc((100% - var(--gallery-gap)) / 2));
+    column-gap: var(--gallery-gap);
+    row-gap: var(--gallery-gap);
+    /* optional: half-gap edges if you prefer that look, but we rely on card padding instead */
+  }
+}
+
+#gallery-section .gallery-grid .thumb {
+  margin: 0;
+  border-radius: 24px;
+  overflow: hidden;
+}
+#gallery-section .gallery-grid .thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+}
+
+
+
+/* ===== GALLERY GRID COLUMN FIX (strong specificity) ===== */
+#gallery-section.page-section .gallery-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: var(--gallery-gap) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  #gallery-section.page-section .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
