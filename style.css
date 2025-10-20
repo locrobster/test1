@@ -24,16 +24,19 @@ body {
   background: linear-gradient(to right, var(--bg1), var(--bg2), var(--bg3));
   color: var(--text);
   margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 /* === BANNER === */
 .banner,
 .banner.cropped {
   position: relative;
-  width: 100%;
+  width: 100vw;
+  margin: 0;
   aspect-ratio: 1920 / 320;
   overflow: hidden;
   display: flex;
@@ -65,6 +68,8 @@ body {
 @media (max-width: 900px) {
   .banner,
   .banner.cropped {
+    width: 100vw;
+    margin: 0;
     aspect-ratio: 1920 / 600;
   }
   
@@ -99,17 +104,16 @@ body {
 .frosted-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 10px 16px;
+  padding: 16px;
+  min-height: 20px;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   color: var(--text);
   text-decoration: none;
-  font-weight: 500;
-  font-size: 14px;
-  transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -121,13 +125,27 @@ body {
 }
 
 .frosted-btn.active {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25), inset 0 0 15px rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
 }
 
 .frosted-btn i {
   font-size: 18px;
+}
+
+.frosted-btn.home-btn {
+  padding: 16px;
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  min-height: 52px;
+}
+
+.frosted-btn.flipped {
+  transform: scaleX(-1);
 }
 
 @media (max-width: 900px) {
@@ -141,23 +159,24 @@ body {
 
 @media (max-width: 700px) {
   .button-container {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 8px;
-    padding: 10px 0;
     gap: 6px;
-    border-radius: 0;
-    justify-content: space-evenly;
+    padding: 10px 16px;
   }
   
   .frosted-btn {
-    flex: 1;
     justify-content: center;
-    padding: 8px 4px;
+    padding: 8px 12px;
     font-size: 13px;
-    min-width: 0;
+    height: 40px;
+    min-height: 40px;
+  }
+  
+  .frosted-btn.home-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 8px;
   }
 }
 
@@ -483,39 +502,6 @@ body {
 .copyright {
   font-size: 14px;
   opacity: 0.7;
-}
-
-/* === LIGHTBOX STYLES === */
-.lightbox {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: 10000;
-  backdrop-filter: blur(10px);
-}
-
-.lightbox .close-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: white;
-  font-size: 24px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 10001;
-  transition: background 0.3s ease;
-}
-
-.lightbox .close-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
 }
 
 /* === RESPONSIVE CONTAINER SIZING === */

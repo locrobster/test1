@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
   <link rel="stylesheet" href="style.css?v=20251019-01" />
   <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="https://unpkg.com/photoswipe@5/dist/photoswipe.css" />
 </head>
 
 <body>
@@ -22,24 +23,31 @@
 
   <!-- Navigation Buttons -->
   <div class="button-container">
-    <a href="index.html" class="frosted-btn active" aria-current="page"><i data-lucide="home"></i> Home</a>
-    <a href="shop.html" class="frosted-btn"><i data-lucide="shopping-bag"></i> Shop</a>
-    <a href="gallery.html" class="frosted-btn"><i data-lucide="image"></i> ART</a>
-    <a href="contact.html" class="frosted-btn"><i data-lucide="mail"></i> Mail</a>
+    <a href="shop.html" class="frosted-btn">Wearing Pleasure</a>
+    <a href="index.html" class="frosted-btn home-btn active" aria-current="page"><i data-lucide="home"></i></a>
+    <a href="gallery.html" class="frosted-btn">Viewing Pleasure</a>
   </div>
 <!-- === INDEX: FEATURED 3x1 GALLERY === -->
 <section class="index-featured-gallery featured-2x2">
-  <div class="thumb" data-group="featured">
-    <img src="images/thumbnails/art/art1.jpg" alt="Featured art 1">
+  <div class="thumb">
+    <a href="images/fullsize/art/art1.jpg">
+      <img src="images/thumbnails/art/art1.jpg" alt="Featured art 1">
+    </a>
   </div>
-  <div class="thumb" data-group="featured">
-    <img src="images/thumbnails/art/art2.jpg" alt="Featured art 2">
+  <div class="thumb">
+    <a href="images/fullsize/art/art2.jpg">
+      <img src="images/thumbnails/art/art2.jpg" alt="Featured art 2">
+    </a>
   </div>
-  <div class="thumb" data-group="featured">
-    <img src="images/thumbnails/art/art3.jpg" alt="Featured art 3">
+  <div class="thumb">
+    <a href="images/fullsize/art/art3.jpg">
+      <img src="images/thumbnails/art/art3.jpg" alt="Featured art 3">
+    </a>
   </div>
-  <div class="thumb" data-group="featured">
-    <img src="images/thumbnails/art/art4.jpg" alt="Featured art 4">
+  <div class="thumb">
+    <a href="images/fullsize/art/art4.jpg">
+      <img src="images/thumbnails/art/art4.jpg" alt="Featured art 4">
+    </a>
   </div>
 </section>
 
@@ -124,5 +132,27 @@
   <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   <script src="script.js?v=20251013-01"></script>
   <script>if (window.lucide && typeof window.lucide.createIcons === 'function') lucide.createIcons();</script>
+
+  <script>
+  // Set correct dimensions for featured gallery images
+  document.querySelectorAll('.index-featured-gallery a[href]').forEach(link => {
+    const fullImg = new Image();
+    fullImg.onload = () => {
+      link.setAttribute('data-pswp-width', fullImg.naturalWidth);
+      link.setAttribute('data-pswp-height', fullImg.naturalHeight);
+    };
+    fullImg.src = link.href;
+  });
+  </script>
+
+  <script type="module">
+  import PhotoSwipeLightbox from 'https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.esm.js';
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '.index-featured-gallery',
+    children: 'a',
+    pswpModule: () => import('https://unpkg.com/photoswipe@5/dist/photoswipe.esm.js')
+  });
+  lightbox.init();
+</script>
 </body>
 </html>
