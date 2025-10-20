@@ -120,4 +120,23 @@
       addShopItem(folder, i);
     }
   });
+  
+  // Add "Coming Soon" placeholders after a short delay to ensure they come after loaded images
+  setTimeout(() => {
+    function addComingSoonItem() {
+      const cell = document.createElement('div');
+      cell.className = 'thumb coming-soon';
+      cell.innerHTML = `
+        <div class="coming-soon-content">
+          <i class="fas fa-plus"></i>
+          <span>Coming Soon</span>
+        </div>
+      `;
+      grid.appendChild(cell);
+    }
+    
+    // Add two "Coming Soon" items
+    addComingSoonItem();
+    addComingSoonItem();
+  }, 100);
 })();
